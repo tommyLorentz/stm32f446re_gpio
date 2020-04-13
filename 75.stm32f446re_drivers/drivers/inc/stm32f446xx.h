@@ -85,7 +85,7 @@
 #define TIM1_BASEADDR					(APB2PERIPH_BASEADDR + 0x0000U)
 
 /*
- * Note: register og a peripheral are specific to MCU.
+ * Note: register of a peripheral are specific to MCU.
  */
 typedef struct
 {
@@ -100,5 +100,58 @@ typedef struct
 	__vo uint32_t 	AFR[2];		// 0x20, GPIO alternate function low(GP0-7), high(GP8-15) register(AFx selection)
 
 }GPIO_RegDef_t;
+
+typedef struct
+{
+	__vo uint32_t 	CR;				// 0x00, RCC clock control register
+	__vo uint32_t 	PLLCFGR;		// 0x04, RCC PLL configuration register
+	__vo uint32_t 	CFGR;			// 0x08, RCC clock configuration register
+	__vo uint32_t 	CIR;			// 0x0C, RCC clock interrupt register
+	__vo uint32_t 	AHB1RSTR;		// 0x10, RCC AHB1 peripheral reset register
+	__vo uint32_t 	AHB2RSTR;		// 0x14, RCC AHB2 peripheral reset register
+	__vo uint32_t 	AHB3RSTR;		// 0x18, RCC AHB3 peripheral reset register
+	__vo uint32_t 	RESERVED0;		// 0x1C
+	__vo uint32_t 	APB1RSTR;		// 0x20, RCC APB1 peripheral reset register
+	__vo uint32_t 	APB2RSTR;		// 0x24, RCC APB2 peripheral reset register
+	__vo uint32_t 	RESERVED1[2];	// 0x28, 0x2C
+	__vo uint32_t 	AHB1ENR;		// 0x30, RCC AHB1 peripheral clock enable register
+	__vo uint32_t 	AHB2ENR;		// 0x34, RCC AHB2 peripheral clock enable register
+	__vo uint32_t 	AHB3ENR;		// 0x38, RCC AHB3 peripheral clock enable register
+	__vo uint32_t 	RESERVED3;		// 0x3C
+	__vo uint32_t 	APB1ENR;		// 0x40, RCC APB1 peripheral clock enable register
+	__vo uint32_t 	APB2ENR;		// 0x44, RCC APB2 peripheral clock enable register
+	__vo uint32_t 	RESERVED4[2];	// 0x48, 0x4C
+	__vo uint32_t 	AHB1LPENR;		// 0x50, RCC AHB1 peripheral clock enable in low power mode register
+	__vo uint32_t 	AHB2LPENR;		// 0x54, RCC AHB2 peripheral clock enable in low power mode register
+	__vo uint32_t 	AHB3LPENR;		// 0x58, RCC AHB3 peripheral clock enable in low power mode register
+	__vo uint32_t 	RESERVED5;		// 0x5C
+	__vo uint32_t 	APB1LPENR;		// 0x60, RCC APB1 peripheral clock enable in low power mode register
+	__vo uint32_t 	APB2LPENR;		// 0x64, RCC APB2 peripheral clock enable in low power mode register
+	__vo uint32_t 	RESERVED6[2];	// 0x68, 0x6C
+	__vo uint32_t 	BDCR;			// 0x70, RCC Backup domain control register
+	__vo uint32_t 	CSR;			// 0x74, RCC clock control & status register
+	__vo uint32_t 	RESERVED7[2];	// 0x78, 0x7C
+	__vo uint32_t 	SSCGR;			// 0x80, RCC spread spectrum clock generation register
+	__vo uint32_t 	PLLI2SCFGR;		// 0x84, RCC PLLI2S configuration register
+	__vo uint32_t 	PLLSAICFGR;		// 0x88, RCC PLL configuration register
+	__vo uint32_t 	DCKCFGR;		// 0x8C, RCC Dedicated Clock Configuration Register
+	__vo uint32_t 	CKGATENR;		// 0x90, RCC clocks gated enable register
+	__vo uint32_t 	DCKCFGR2;		// 0x94, RCC dedicated clocks configuration register 2
+
+}RCC_RegDef_t;
+
+/*
+ * Note: peripheral definition (Peripheral base addresses typecasted to xxx_RegDef_t
+ */
+#define GPIOA		((GPIO_RegDef_t *) GPIOA_BASEADDR)
+#define GPIOB		((GPIO_RegDef_t *) GPIOB_BASEADDR)
+#define GPIOC		((GPIO_RegDef_t *) GPIOC_BASEADDR)
+#define GPIOD		((GPIO_RegDef_t *) GPIOD_BASEADDR)
+#define GPIOE		((GPIO_RegDef_t *) GPIOE_BASEADDR)
+#define GPIOF		((GPIO_RegDef_t *) GPIOF_BASEADDR)
+#define GPIOG		((GPIO_RegDef_t *) GPIOG_BASEADDR)
+#define GPIOH		((GPIO_RegDef_t *) GPIOH_BASEADDR)
+
+#define RCC			((RCC_RegDef_t *) RCC_BASEADDR)
 
 #endif /* INC_STM32F446XX_H_ */
