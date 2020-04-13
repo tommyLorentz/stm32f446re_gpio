@@ -11,6 +11,8 @@
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+#include "stm32f446xx.h"
+
 int main(void)
 {
 	for(;;);
