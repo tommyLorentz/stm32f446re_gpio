@@ -31,7 +31,7 @@
 
 
 /*
- * AHB and APB bus Peripheral base addresses
+ * Base addresses of Peripheral which are hanging on [AHB1] bus
  */
 #define GPIOA_BASEADDR					(AHB1PERIPH_BASEADDR + 0x0000U)
 #define GPIOB_BASEADDR					(AHB1PERIPH_BASEADDR + 0x0400U)
@@ -41,9 +41,24 @@
 #define GPIOF_BASEADDR					(AHB1PERIPH_BASEADDR + 0x1400U)
 #define GPIOG_BASEADDR					(AHB1PERIPH_BASEADDR + 0x1800U)
 #define GPIOH_BASEADDR					(AHB1PERIPH_BASEADDR + 0x1C00U)
+#define RCC_BASEADDR					(AHB1PERIPH_BASEADDR + 0x3800U)
+/*
+* Base addresses of Peripheral which are hanging on [APB1] bus
+ */
+#define SPI2_BASEADDR					(APB1PERIPH_BASEADDR + 0x3800U)
+#define SPI3_BASEADDR					(APB1PERIPH_BASEADDR + 0x3C00U)
+#define USART2_BASEADDR					(APB1PERIPH_BASEADDR + 0x4400U)
+#define USART3_BASEADDR					(APB1PERIPH_BASEADDR + 0x4800U)
+#define I2C1_BASEADDR					(APB1PERIPH_BASEADDR + 0x5400U)
+#define I2C2_BASEADDR					(APB1PERIPH_BASEADDR + 0x5800U)
+#define I2C3_BASEADDR					(APB1PERIPH_BASEADDR + 0x5C00U)
 
-
-
+/*
+* Base addresses of Peripheral which are hanging on [APB2] bus
+ */
+#define SPI1_BASEADDR					(APB2PERIPH_BASEADDR + 0x3000U)
+#define SYSCFG_BASEADDR					(APB2PERIPH_BASEADDR + 0x3800U)
+#define EXTI_BASEADDR					(APB2PERIPH_BASEADDR + 0x3C00U)
 
 
 #endif /* INC_STM32F446XX_H_ */

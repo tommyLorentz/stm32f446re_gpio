@@ -591,18 +591,18 @@ OUTPUT(75.stm32f446re_drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000000       0x10 Src/main.o
  .debug_ranges  0x0000000000000010       0x20 Startup/startup_stm32f446retx.o
 
-.debug_macro    0x0000000000000000      0xaf6
+.debug_macro    0x0000000000000000      0xb38
  .debug_macro   0x0000000000000000       0x1a Src/main.o
  .debug_macro   0x000000000000001a      0xa60 Src/main.o
- .debug_macro   0x0000000000000a7a       0x7c Src/main.o
+ .debug_macro   0x0000000000000a7a       0xbe Src/main.o
 
 .debug_line     0x0000000000000000      0x112
  .debug_line    0x0000000000000000       0x8e Src/main.o
  .debug_line    0x000000000000008e       0x84 Startup/startup_stm32f446retx.o
 
-.debug_str      0x0000000000000000     0x2fce
- .debug_str     0x0000000000000000     0x2f9d Src/main.o
- .debug_str     0x0000000000002f9d       0x31 Startup/startup_stm32f446retx.o
+.debug_str      0x0000000000000000     0x31cd
+ .debug_str     0x0000000000000000     0x319c Src/main.o
+ .debug_str     0x000000000000319c       0x31 Startup/startup_stm32f446retx.o
                                          0x66 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b
