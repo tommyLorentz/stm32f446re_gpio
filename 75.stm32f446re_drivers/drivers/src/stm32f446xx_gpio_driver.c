@@ -55,6 +55,16 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pHandle, uint8_t IsEn)
  */
 void GPIO_Init(GPIO_RegDef_t *pHandle)
 {
+	// 1. configure the mode of gpio pin
+
+	// 2. configure the speed
+
+	// 3. configure the pupd settings
+
+	// 4. configure the output type
+
+	// 5. configure the alt functionality
+
 
 }
 
