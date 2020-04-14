@@ -63,7 +63,7 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 		// non-interrupt mode
 		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode;
 		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2);
-		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) | pGpioPinHandle->pGpioBase->MODER;
+		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) & pGpioPinHandle->pGpioBase->MODER;
 		pGpioPinHandle->pGpioBase->MODER = temp | reg;
 	}
 	else
@@ -76,7 +76,7 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 	{
 		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinSpeed;
 		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2);
-		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) | pGpioPinHandle->pGpioBase->OSPEEDER;
+		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) & pGpioPinHandle->pGpioBase->OSPEEDER;
 		pGpioPinHandle->pGpioBase->OSPEEDER = temp | reg;
 	}
 
@@ -84,7 +84,7 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 	{
 		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinPupdControl;
 		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2);
-		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) | pGpioPinHandle->pGpioBase->PUPDR;
+		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) & pGpioPinHandle->pGpioBase->PUPDR;
 		pGpioPinHandle->pGpioBase->PUPDR = temp | reg;
 	}
 
@@ -93,17 +93,22 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 	{
 		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinOpType;
 		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber);
-		temp = ~( 0x1 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber) ) | pGpioPinHandle->pGpioBase->OTYPER;
+		temp = ~( 0x1 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber) ) & pGpioPinHandle->pGpioBase->OTYPER;
 		pGpioPinHandle->pGpioBase->OTYPER = temp | reg;
 	}
 
 	// 5. configure the alt functionality
 	if (pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALT)
 	{
-		//
+		uint32_t isHigh, offset;
+
+		offset = (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber % 8) * 4;
+		isHigh = (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber / 8);
+
+		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinAltFunMode << offset; // offset for pin x
+		temp = ~( 0xf << offset ) & pGpioPinHandle->pGpioBase->AFR[isHigh];
+		pGpioPinHandle->pGpioBase->AFR[isHigh] = temp | reg;
 	}
-
-
 }
 
 void GPIO_DeInit(GPIO_Handle_t *pGpioPinHandle)
