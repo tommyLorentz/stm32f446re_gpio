@@ -17,7 +17,8 @@
 #include "stm32f446xx_gpio_driver.h"
 
 // #define VIDEO_103	"LED_PUSH_PULL"
-#define VIDEO_104	"LED_OPEN_DRAIN"
+// #define VIDEO_104	"LED_OPEN_DRAIN"
+#define VIDEO_105		  "BUTTOM_LED_PUSH_PULL"
 
 #if defined(VIDEO_103)
 void delay(void)
@@ -48,6 +49,7 @@ void video103_push_pull_led(void)
 		delay();
 	}
 }
+
 #elif defined(VIDEO_104)
 void delay(void)
 {
@@ -76,6 +78,50 @@ void video104_open_drain_led(void)
 		delay();
 	}
 }
+
+#elif defined(VIDEO_105)
+void delay(void)
+{
+	uint32_t i;
+	for (i=0; i<500000; ++i) { }
+}
+
+void video105_button_push_pull_led(void)
+{
+	GPIO_Handle_t GpioLed, GpioBtn;
+	memset(&GpioLed, 0x00, sizeof(GpioLed));
+	memset(&GpioBtn, 0x00, sizeof(GpioBtn));
+
+	GpioLed.pGpioBase = GPIOA;
+	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	GpioLed.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_FAST;
+	GpioLed.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
+
+	GPIO_PeriClockControl(GPIOA, ENABLE);
+	GPIO_Init(&GpioLed);
+
+	GpioBtn.pGpioBase = GPIOC;
+	GpioBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	GpioBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_INPUT;
+	GpioBtn.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	GpioBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_LOW;
+	//GpioBtn.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
+
+	GPIO_PeriClockControl(GPIOC, ENABLE);
+	GPIO_Init(&GpioBtn);
+
+
+	while(1)
+	{
+		if (DISABLE == GPIO_ReadFromInputPin(GpioBtn.pGpioBase, GpioBtn.GPIO_PinConfig.GPIO_PinNumber))
+		{
+			GPIO_ToggleOutputPin(GpioLed.pGpioBase, GpioLed.GPIO_PinConfig.GPIO_PinNumber);
+			delay();
+		}
+	}
+}
 #endif
 
 int main(void)
@@ -84,6 +130,8 @@ int main(void)
 	video103_push_pull_led();
 #elif defined(VIDEO_104)
 	video104_open_drain_led();
+#elif defined(VIDEO_105)
+	video105_button_push_pull_led();
 #endif
 	return 0;
 }
