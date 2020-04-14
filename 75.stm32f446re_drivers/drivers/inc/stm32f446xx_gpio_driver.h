@@ -36,4 +36,37 @@ typedef struct
 
 }GPIO_Handle_t;
 
+
+/**************************************************
+ *
+ *                 APIs supported by the driver
+ *
+ **************************************************/
+/*
+ * Peripheral clock setup
+ */
+void GPIO_PeriClockControl(void);
+
+/*
+ * Init and Deinit
+ */
+void GPIO_Init(void);
+void GPIO_DeInit(void);
+
+/*
+ * Data read and write
+ */
+void GPIO_ReadFromInputPin(void);
+void GPIO_ReadFromInputPort(void);
+void GPIO_WriteToOutputPin(void);
+void GPIO_WriteToOutputPort(void);
+void GPIO_ToggleOutputPort(void);
+
+/*
+ * IRQ configuration and ISR handling
+ */
+void GPIO_IrqConfig(void);
+void GPIO_IrqHandling(void);
+
+
 #endif /* INC_STM32F446XX_GPIO_DRIVER_H_ */
