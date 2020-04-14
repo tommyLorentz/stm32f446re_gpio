@@ -11,10 +11,48 @@
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+#include <string.h>
+
 #include "stm32f446xx.h"
+#include "stm32f446xx_gpio_driver.h"
+
+#define VIDEO_103	"LED_PUSH_PULL"
+
+#if defined(VIDEO_103)
+void delay(void)
+{
+	uint32_t i;
+	for (i=0; i<100000; ++i) { }
+}
+
+void video103_push_pull_led(void)
+{
+	GPIO_Handle_t GpioLed;
+	memset(&GpioLed, 0x00, sizeof(GpioLed));
+	GpioLed.pGpioBase = GPIOA;
+	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	GpioLed.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_FAST;
+	GpioLed.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
+
+	GPIO_PeriClockControl(GPIOA, ENABLE);
+
+	GPIO_Init(&GpioLed);
+
+
+	while(1)
+	{
+		GPIO_ToggleOutputPin(GpioLed.pGpioBase, GpioLed.GPIO_PinConfig.GPIO_PinNumber);
+		delay();
+	}
+}
+#endif
 
 int main(void)
 {
-	for(;;);
-
+#if defined(VIDEO_103)
+	video103_push_pull_led();
+#endif
+	return 0;
 }
