@@ -5,8 +5,8 @@ stm32f446xx_gpio_driver.c:143:9:GPIO_ReadFromInputPin	24	static
 stm32f446xx_gpio_driver.c:163:10:GPIO_ReadFromInputPort	16	static
 stm32f446xx_gpio_driver.c:182:9:GPIO_ReadfromOutputPin	24	static
 stm32f446xx_gpio_driver.c:189:10:GPIO_ReadfromOutputPort	16	static
-stm32f446xx_gpio_driver.c:194:6:GPIO_WriteToOutputPin	16	static
-stm32f446xx_gpio_driver.c:207:6:GPIO_WriteToOutputPort	16	static
-stm32f446xx_gpio_driver.c:212:6:GPIO_ToggleOutputPort	16	static
-stm32f446xx_gpio_driver.c:220:6:GPIO_IrqConfig	16	static
-stm32f446xx_gpio_driver.c:224:6:GPIO_IrqHandling	16	static
+stm32f446xx_gpio_driver.c:207:6:GPIO_WriteToOutputPin	16	static
+stm32f446xx_gpio_driver.c:220:6:GPIO_WriteToOutputPort	16	static
+stm32f446xx_gpio_driver.c:238:6:GPIO_ToggleOutputPin	16	static
+stm32f446xx_gpio_driver.c:246:6:GPIO_IrqConfig	16	static
+stm32f446xx_gpio_driver.c:250:6:GPIO_IrqHandling	16	static

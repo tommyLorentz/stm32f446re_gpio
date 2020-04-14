@@ -167,7 +167,7 @@ uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGpioBase)
 
 
 /************************************************************
- * @fn          - GPIO_WriteToOutputPin
+ * @fn          - GPIO_ReadfromOutputPin
  *
  * @brief		- This function write the output data(1 bit) of GPIO
  *
@@ -191,6 +191,19 @@ uint16_t GPIO_ReadfromOutputPort(GPIO_RegDef_t *pGpioBase)
 	return (uint16_t) pGpioBase->ODR;
 }
 
+/************************************************************
+ * @fn          - GPIO_WriteToOutputPin
+ *
+ * @brief		- This function write the output data(1 bit) of GPIO
+ *
+ * @param[in]   - base address of the gpio peripheral
+ * @param[in]   - pin number
+ * @param[in]   -
+ *
+ * @return		- none
+ *
+ * @Note        - none
+ */
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber, uint8_t Value)
 {
 	if (Value == GPIO_SET)
@@ -209,9 +222,22 @@ void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGpioBase, uint16_t Value)
 	pGpioBase->ODR = Value;
 }
 
-void GPIO_ToggleOutputPort(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber)
+/************************************************************
+ * @fn          - GPIO_ToggleOutputPort
+ *
+ * @brief		- This function reverse the output data(1 bit) of GPIO
+ *
+ * @param[in]   - base address of the gpio peripheral
+ * @param[in]   - pin number
+ * @param[in]   -
+ *
+ * @return		- none
+ *
+ * @Note        - none
+ */
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber)
 {
-
+	pGpioBase->ODR ^= (0x01 << PinNumber);
 }
 
 /*

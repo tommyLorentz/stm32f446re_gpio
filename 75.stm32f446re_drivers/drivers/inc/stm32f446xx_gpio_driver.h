@@ -125,7 +125,7 @@ uint8_t GPIO_ReadfromOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber);
 uint16_t GPIO_ReadfromOutputPort(GPIO_RegDef_t *pGpioBase);
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber, uint8_t Value);
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGpioBase, uint16_t Value);
-void GPIO_ToggleOutputPort(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber);
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber);
 
 /*
  * IRQ configuration and ISR handling
