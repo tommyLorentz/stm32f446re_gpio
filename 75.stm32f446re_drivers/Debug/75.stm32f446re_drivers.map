@@ -267,9 +267,9 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xef drivers/src/stm32f446xx_gpio_driver.o
  .debug_macro   0x0000000000000000       0x6a drivers/src/stm32f446xx_gpio_driver.o
  .debug_macro   0x0000000000000000      0x1df drivers/src/stm32f446xx_gpio_driver.o
- .debug_macro   0x0000000000000000      0x215 drivers/src/stm32f446xx_gpio_driver.o
+ .debug_macro   0x0000000000000000      0x239 drivers/src/stm32f446xx_gpio_driver.o
  .debug_line    0x0000000000000000      0x3f1 drivers/src/stm32f446xx_gpio_driver.o
- .debug_str     0x0000000000000000     0x4a05 drivers/src/stm32f446xx_gpio_driver.o
+ .debug_str     0x0000000000000000     0x4a44 drivers/src/stm32f446xx_gpio_driver.o
  .comment       0x0000000000000000       0x7c drivers/src/stm32f446xx_gpio_driver.o
  .ARM.attributes
                 0x0000000000000000       0x33 drivers/src/stm32f446xx_gpio_driver.o
@@ -627,7 +627,7 @@ OUTPUT(75.stm32f446re_drivers.elf elf32-littlearm)
  .debug_ranges  0x0000000000000000       0x10 Src/main.o
  .debug_ranges  0x0000000000000010       0x20 Startup/startup_stm32f446retx.o
 
-.debug_macro    0x0000000000000000     0x1120
+.debug_macro    0x0000000000000000     0x1144
  .debug_macro   0x0000000000000000       0x72 Src/main.o
  .debug_macro   0x0000000000000072      0xa60 Src/main.o
  .debug_macro   0x0000000000000ad2       0x22 Src/main.o
@@ -636,16 +636,16 @@ OUTPUT(75.stm32f446re_drivers.elf elf32-littlearm)
  .debug_macro   0x0000000000000bd3       0xef Src/main.o
  .debug_macro   0x0000000000000cc2       0x6a Src/main.o
  .debug_macro   0x0000000000000d2c      0x1df Src/main.o
- .debug_macro   0x0000000000000f0b      0x215 Src/main.o
+ .debug_macro   0x0000000000000f0b      0x239 Src/main.o
 
 .debug_line     0x0000000000000000      0x451
  .debug_line    0x0000000000000000      0x3cd Src/main.o
  .debug_line    0x00000000000003cd       0x84 Startup/startup_stm32f446retx.o
 
-.debug_str      0x0000000000000000     0x48a5
- .debug_str     0x0000000000000000     0x4874 Src/main.o
-                                       0x49cf (size before relaxing)
- .debug_str     0x0000000000004874       0x31 Startup/startup_stm32f446retx.o
+.debug_str      0x0000000000000000     0x48e4
+ .debug_str     0x0000000000000000     0x48b3 Src/main.o
+                                       0x4a0e (size before relaxing)
+ .debug_str     0x00000000000048b3       0x31 Startup/startup_stm32f446retx.o
                                          0x66 (size before relaxing)
 
 .comment        0x0000000000000000       0x7b

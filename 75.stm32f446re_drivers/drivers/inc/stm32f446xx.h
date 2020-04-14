@@ -11,8 +11,17 @@
 
 #include <stdint.h>
 
-#define __vo	volatile
+/*
+ * Generic macros
+ */
+#define __vo		volatile
 
+#define ENABLE				1
+#define DISABLE				0
+#define SET					1
+#define RESET				0
+#define GPIO_SET			SET
+#define GPIO_RESET			RESET
 
 /*
  * base addresses of Flash and SRAM memories
