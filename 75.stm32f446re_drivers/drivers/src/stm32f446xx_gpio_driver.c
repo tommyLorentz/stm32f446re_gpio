@@ -125,29 +125,57 @@ void GPIO_DeInit(GPIO_Handle_t *pGpioPinHandle)
 }
 
 /*
- * Data read and write
+ * Read input data
  */
-uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pHandle, uint8_t PinNumber)
+/************************************************************
+ * @fn          - GPIO_ReadFromInputPin
+ *
+ * @brief		- This function read the input data of GPIO
+ *
+ * @param[in]   - base address of the gpio peripheral
+ * @param[in]   - pin number
+ * @param[in]   -
+ *
+ * @return		- 0 or 1
+ *
+ * @Note        - none
+ */
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber)
+{
+	uint8_t value;
+	value = (uint8_t) ((pGpioBase->IDR >> PinNumber) & 0x00000001);
+	return value;
+}
+
+/************************************************************
+ * @fn          - GPIO_ReadFromInputPort
+ *
+ * @brief		- This function read the input port (16 bits) of GPIOx
+ *
+ * @param[in]   - base address of the gpio peripheral
+ * @param[in]   - pin number
+ * @param[in]   -
+ *
+ * @return		- 16bits input data
+ *
+ * @Note        - none
+ */
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGpioBase)
+{
+	return (uint16_t) pGpioBase->IDR;
+}
+
+uint8_t GPIO_WriteToOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber, uint8_t Value)
 {
 
 }
 
-uint32_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pHandle)
+uint8_t GPIO_WriteToOutputPort(GPIO_RegDef_t *pGpioBase, uint16_t Value)
 {
 
 }
 
-uint8_t GPIO_WriteToOutputPin(GPIO_RegDef_t *pHandle, uint8_t PinNumber, uint8_t Value)
-{
-
-}
-
-uint8_t GPIO_WriteToOutputPort(GPIO_RegDef_t *pHandle, uint16_t Value)
-{
-
-}
-
-uint8_t GPIO_ToggleOutputPort(GPIO_RegDef_t *pHandle, uint8_t PinNumber)
+uint8_t GPIO_ToggleOutputPort(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber)
 {
 
 }

@@ -115,11 +115,11 @@ void GPIO_DeInit(GPIO_Handle_t *pGpioPinHandle);
 /*
  * Data read and write
  */
-uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pHandle, uint8_t PinNumber);
-uint32_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pHandle);
-uint8_t GPIO_WriteToOutputPin(GPIO_RegDef_t *pHandle, uint8_t PinNumber, uint8_t Value);
-uint8_t GPIO_WriteToOutputPort(GPIO_RegDef_t *pHandle, uint16_t Value);
-uint8_t GPIO_ToggleOutputPort(GPIO_RegDef_t *pHandle, uint8_t PinNumber);
+uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber);
+uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGpioBase);
+uint8_t GPIO_WriteToOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber, uint8_t Value);
+uint8_t GPIO_WriteToOutputPort(GPIO_RegDef_t *pGpioBase, uint16_t Value);
+uint8_t GPIO_ToggleOutputPort(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber);
 
 /*
  * IRQ configuration and ISR handling
