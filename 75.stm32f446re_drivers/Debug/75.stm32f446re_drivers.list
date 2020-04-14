@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  16 .debug_macro  00001ccd  00000000  00000000  00011b90  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   00000c4d  00000000  00000000  0001385d  2**0
+ 17 .debug_line   00000c4e  00000000  00000000  0001385d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    0000839e  00000000  00000000  000144aa  2**0
+ 18 .debug_str    000083a0  00000000  00000000  000144ab  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  0001c848  2**0
+ 19 .comment      0000007b  00000000  00000000  0001c84b  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000002b0  00000000  00000000  0001c8c4  2**2
+ 20 .debug_frame  000002b0  00000000  00000000  0001c8c8  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -77,10 +77,10 @@ Disassembly of section .text:
  8000200:	0800066c 	.word	0x0800066c
 
 08000204 <delay>:
-
-#define VIDEO_103	"LED_PUSH_PULL"
-
-#if defined(VIDEO_103)
+		delay();
+	}
+}
+#elif defined(VIDEO_104)
 void delay(void)
 {
  8000204:	b480      	push	{r7}
@@ -106,9 +106,9 @@ void delay(void)
  8000226:	4770      	bx	lr
  8000228:	0001869f 	.word	0x0001869f
 
-0800022c <video103_push_pull_led>:
+0800022c <video104_open_drain_led>:
 
-void video103_push_pull_led(void)
+void video104_open_drain_led(void)
 {
  800022c:	b580      	push	{r7, lr}
  800022e:	b084      	sub	sp, #16
@@ -121,7 +121,7 @@ void video103_push_pull_led(void)
  8000238:	4618      	mov	r0, r3
  800023a:	f000 fa0f 	bl	800065c <memset>
 	GpioLed.pGpioBase = GPIOA;
- 800023e:	4b0e      	ldr	r3, [pc, #56]	; (8000278 <video103_push_pull_led+0x4c>)
+ 800023e:	4b0e      	ldr	r3, [pc, #56]	; (8000278 <video104_open_drain_led+0x4c>)
  8000240:	607b      	str	r3, [r7, #4]
 	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
  8000242:	2305      	movs	r3, #5
@@ -129,26 +129,25 @@ void video103_push_pull_led(void)
 	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
  8000246:	2301      	movs	r3, #1
  8000248:	727b      	strb	r3, [r7, #9]
-	GpioLed.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
- 800024a:	2300      	movs	r3, #0
+	GpioLed.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_PU;
+ 800024a:	2301      	movs	r3, #1
  800024c:	72fb      	strb	r3, [r7, #11]
 	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_FAST;
  800024e:	2302      	movs	r3, #2
  8000250:	72bb      	strb	r3, [r7, #10]
-	GpioLed.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
- 8000252:	2300      	movs	r3, #0
+	GpioLed.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_OPENDRAIN;
+ 8000252:	2301      	movs	r3, #1
  8000254:	733b      	strb	r3, [r7, #12]
 
 	GPIO_PeriClockControl(GPIOA, ENABLE);
  8000256:	2101      	movs	r1, #1
- 8000258:	4807      	ldr	r0, [pc, #28]	; (8000278 <video103_push_pull_led+0x4c>)
+ 8000258:	4807      	ldr	r0, [pc, #28]	; (8000278 <video104_open_drain_led+0x4c>)
  800025a:	f000 f841 	bl	80002e0 <GPIO_PeriClockControl>
 
 	GPIO_Init(&GpioLed);
  800025e:	1d3b      	adds	r3, r7, #4
  8000260:	4618      	mov	r0, r3
  8000262:	f000 f90d 	bl	8000480 <GPIO_Init>
-
 
 	while(1)
 	{
@@ -161,7 +160,7 @@ void video103_push_pull_led(void)
 		delay();
  8000272:	f7ff ffc7 	bl	8000204 <delay>
 		GPIO_ToggleOutputPin(GpioLed.pGpioBase, GpioLed.GPIO_PinConfig.GPIO_PinNumber);
- 8000276:	e7f6      	b.n	8000266 <video103_push_pull_led+0x3a>
+ 8000276:	e7f6      	b.n	8000266 <video104_open_drain_led+0x3a>
  8000278:	40020000 	.word	0x40020000
 
 0800027c <main>:
@@ -175,7 +174,9 @@ int main(void)
  800027e:	af00      	add	r7, sp, #0
 #if defined(VIDEO_103)
 	video103_push_pull_led();
- 8000280:	f7ff ffd4 	bl	800022c <video103_push_pull_led>
+#elif defined(VIDEO_104)
+	video104_open_drain_led();
+ 8000280:	f7ff ffd4 	bl	800022c <video104_open_drain_led>
 #endif
 	return 0;
  8000284:	2300      	movs	r3, #0

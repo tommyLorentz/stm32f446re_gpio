@@ -16,7 +16,8 @@
 #include "stm32f446xx.h"
 #include "stm32f446xx_gpio_driver.h"
 
-#define VIDEO_103	"LED_PUSH_PULL"
+// #define VIDEO_103	"LED_PUSH_PULL"
+#define VIDEO_104	"LED_OPEN_DRAIN"
 
 #if defined(VIDEO_103)
 void delay(void)
@@ -47,12 +48,42 @@ void video103_push_pull_led(void)
 		delay();
 	}
 }
+#elif defined(VIDEO_104)
+void delay(void)
+{
+	uint32_t i;
+	for (i=0; i<100000; ++i) { }
+}
+
+void video104_open_drain_led(void)
+{
+	GPIO_Handle_t GpioLed;
+	memset(&GpioLed, 0x00, sizeof(GpioLed));
+	GpioLed.pGpioBase = GPIOA;
+	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	GpioLed.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_PU;    // pull up but 40k Ohm, the current is too weak
+	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_FAST;
+	GpioLed.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_OPENDRAIN; // open drain
+
+	GPIO_PeriClockControl(GPIOA, ENABLE);
+
+	GPIO_Init(&GpioLed);
+
+	while(1)
+	{
+		GPIO_ToggleOutputPin(GpioLed.pGpioBase, GpioLed.GPIO_PinConfig.GPIO_PinNumber);
+		delay();
+	}
+}
 #endif
 
 int main(void)
 {
 #if defined(VIDEO_103)
 	video103_push_pull_led();
+#elif defined(VIDEO_104)
+	video104_open_drain_led();
 #endif
 	return 0;
 }
