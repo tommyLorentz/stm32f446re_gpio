@@ -234,4 +234,16 @@ typedef struct
  */
 
 
+/*
+ * RESET macros for GPIOx peripheral
+ */
+#define GPIOA_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 0) ); (RCC->AHB1RSTR &= ~(1 << 0) ); }while(0)	// gpio port reset
+#define GPIOB_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 1) ); (RCC->AHB1RSTR &= ~(1 << 1) ); }while(0)	// gpio port reset
+#define GPIOC_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 2) ); (RCC->AHB1RSTR &= ~(1 << 2) ); }while(0)	// gpio port reset
+#define GPIOD_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 3) ); (RCC->AHB1RSTR &= ~(1 << 3) ); }while(0)	// gpio port reset
+#define GPIOE_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 4) ); (RCC->AHB1RSTR &= ~(1 << 4) ); }while(0)	// gpio port reset
+#define GPIOF_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 5) ); (RCC->AHB1RSTR &= ~(1 << 5) ); }while(0)	// gpio port reset
+#define GPIOG_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 6) ); (RCC->AHB1RSTR &= ~(1 << 6) ); }while(0)	// gpio port reset
+#define GPIOH_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 7) ); (RCC->AHB1RSTR &= ~(1 << 7) ); }while(0)	// gpio port reset
+
 #endif /* INC_STM32F446XX_H_ */

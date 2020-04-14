@@ -24,29 +24,29 @@
  *
  * @Note        - none
  */
-void GPIO_PeriClockControl(GPIO_RegDef_t *pHandle, uint8_t IsEn)
+void GPIO_PeriClockControl(GPIO_RegDef_t *pGpioBase, uint8_t IsEn)
 {
 	if (IsEn == ENABLE)
 	{
-		if (pHandle == GPIOA) GPIOA_PCLK_ENABLE();
-		else if (pHandle == GPIOB) GPIOB_PCLK_ENABLE();
-		else if (pHandle == GPIOC) GPIOC_PCLK_ENABLE();
-		else if (pHandle == GPIOD) GPIOD_PCLK_ENABLE();
-		else if (pHandle == GPIOE) GPIOE_PCLK_ENABLE();
-		else if (pHandle == GPIOF) GPIOF_PCLK_ENABLE();
-		else if (pHandle == GPIOG) GPIOG_PCLK_ENABLE();
-		else if (pHandle == GPIOH) GPIOH_PCLK_ENABLE();
+		if (pGpioBase == GPIOA) GPIOA_PCLK_ENABLE();
+		else if (pGpioBase == GPIOB) GPIOB_PCLK_ENABLE();
+		else if (pGpioBase == GPIOC) GPIOC_PCLK_ENABLE();
+		else if (pGpioBase == GPIOD) GPIOD_PCLK_ENABLE();
+		else if (pGpioBase == GPIOE) GPIOE_PCLK_ENABLE();
+		else if (pGpioBase == GPIOF) GPIOF_PCLK_ENABLE();
+		else if (pGpioBase == GPIOG) GPIOG_PCLK_ENABLE();
+		else if (pGpioBase == GPIOH) GPIOH_PCLK_ENABLE();
 	}
 	else
 	{
-		if (pHandle == GPIOA) GPIOA_PCLK_DI();
-		else if (pHandle == GPIOB) GPIOB_PCLK_DI();
-		else if (pHandle == GPIOC) GPIOC_PCLK_DI();
-		else if (pHandle == GPIOD) GPIOD_PCLK_DI();
-		else if (pHandle == GPIOE) GPIOE_PCLK_DI();
-		else if (pHandle == GPIOF) GPIOF_PCLK_DI();
-		else if (pHandle == GPIOG) GPIOG_PCLK_DI();
-		else if (pHandle == GPIOH) GPIOH_PCLK_DI();
+		if (pGpioBase == GPIOA) GPIOA_PCLK_DI();
+		else if (pGpioBase == GPIOB) GPIOB_PCLK_DI();
+		else if (pGpioBase == GPIOC) GPIOC_PCLK_DI();
+		else if (pGpioBase == GPIOD) GPIOD_PCLK_DI();
+		else if (pGpioBase == GPIOE) GPIOE_PCLK_DI();
+		else if (pGpioBase == GPIOF) GPIOF_PCLK_DI();
+		else if (pGpioBase == GPIOG) GPIOG_PCLK_DI();
+		else if (pGpioBase == GPIOH) GPIOH_PCLK_DI();
 	}
 }
 
@@ -113,7 +113,15 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 
 void GPIO_DeInit(GPIO_Handle_t *pGpioPinHandle)
 {
-
+	GPIO_RegDef_t	*pGpioBase = pGpioPinHandle->pGpioBase;
+	if (pGpioBase == GPIOA) GPIOA_REG_RESET();
+	else if (pGpioBase == GPIOB) GPIOB_REG_RESET();
+	else if (pGpioBase == GPIOC) GPIOC_REG_RESET();
+	else if (pGpioBase == GPIOD) GPIOD_REG_RESET();
+	else if (pGpioBase == GPIOE) GPIOE_REG_RESET();
+	else if (pGpioBase == GPIOF) GPIOF_REG_RESET();
+	else if (pGpioBase == GPIOG) GPIOG_REG_RESET();
+	else if (pGpioBase == GPIOH) GPIOH_REG_RESET();
 }
 
 /*
