@@ -53,22 +53,60 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pHandle, uint8_t IsEn)
 /*
  * Init and Deinit
  */
-void GPIO_Init(GPIO_RegDef_t *pHandle)
+void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 {
+	uint32_t reg = 0, temp;
+
 	// 1. configure the mode of gpio pin
+	if (pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
+	{
+		// non-interrupt mode
+		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode;
+		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2);
+		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) | pGpioPinHandle->pGpioBase->MODER;
+		pGpioPinHandle->pGpioBase->MODER = temp | reg;
+	}
+	else
+	{
+		// interrupt mode
+	}
 
 	// 2. configure the speed
+	if (pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_OUTPUT)
+	{
+		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinSpeed;
+		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2);
+		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) | pGpioPinHandle->pGpioBase->OSPEEDER;
+		pGpioPinHandle->pGpioBase->OSPEEDER = temp | reg;
+	}
 
 	// 3. configure the pupd settings
+	{
+		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinPupdControl;
+		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2);
+		temp = ~( 0x3 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber * 2) ) | pGpioPinHandle->pGpioBase->PUPDR;
+		pGpioPinHandle->pGpioBase->PUPDR = temp | reg;
+	}
 
 	// 4. configure the output type
+	if (pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_OUTPUT)
+	{
+		reg = pGpioPinHandle->GPIO_PinConfig.GPIO_PinOpType;
+		reg <<= (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber);
+		temp = ~( 0x1 << (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber) ) | pGpioPinHandle->pGpioBase->OTYPER;
+		pGpioPinHandle->pGpioBase->OTYPER = temp | reg;
+	}
 
 	// 5. configure the alt functionality
+	if (pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALT)
+	{
+		//
+	}
 
 
 }
 
-void GPIO_DeInit(GPIO_RegDef_t *pHandle)
+void GPIO_DeInit(GPIO_Handle_t *pGpioPinHandle)
 {
 
 }

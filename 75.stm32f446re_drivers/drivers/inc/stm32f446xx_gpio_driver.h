@@ -31,7 +31,7 @@ typedef struct
 typedef struct
 {
 	// pointer to hold the base address of the GPIO peripheral
-	GPIO_RegDef_t	*pGpioHandle;		/* This holds the base address of the GPIO port to which the pin belongs */
+	GPIO_RegDef_t	*pGpioBase;		/* This holds the base address of the GPIO port to which the pin belongs */
 	GPIO_PinConfig_t GPIO_PinConfig;	/* This holds GPIO pin configuration settings */
 
 }GPIO_Handle_t;
@@ -109,8 +109,8 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pHandle, uint8_t IsEn);
 /*
  * Init and Deinit
  */
-void GPIO_Init(GPIO_RegDef_t *pHandle);
-void GPIO_DeInit(GPIO_RegDef_t *pHandle);
+void GPIO_Init(GPIO_Handle_t *pGpioPinHandle);
+void GPIO_DeInit(GPIO_Handle_t *pGpioPinHandle);
 
 /*
  * Data read and write
