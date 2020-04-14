@@ -26,7 +26,28 @@
  */
 void GPIO_PeriClockControl(GPIO_RegDef_t *pHandle, uint8_t IsEn)
 {
-
+	if (IsEn == ENABLE)
+	{
+		if (pHandle == GPIOA) GPIOA_PCLK_ENABLE();
+		else if (pHandle == GPIOB) GPIOB_PCLK_ENABLE();
+		else if (pHandle == GPIOC) GPIOC_PCLK_ENABLE();
+		else if (pHandle == GPIOD) GPIOD_PCLK_ENABLE();
+		else if (pHandle == GPIOE) GPIOE_PCLK_ENABLE();
+		else if (pHandle == GPIOF) GPIOF_PCLK_ENABLE();
+		else if (pHandle == GPIOG) GPIOG_PCLK_ENABLE();
+		else if (pHandle == GPIOH) GPIOH_PCLK_ENABLE();
+	}
+	else
+	{
+		if (pHandle == GPIOA) GPIOA_PCLK_DI();
+		else if (pHandle == GPIOB) GPIOB_PCLK_DI();
+		else if (pHandle == GPIOC) GPIOC_PCLK_DI();
+		else if (pHandle == GPIOD) GPIOD_PCLK_DI();
+		else if (pHandle == GPIOE) GPIOE_PCLK_DI();
+		else if (pHandle == GPIOF) GPIOF_PCLK_DI();
+		else if (pHandle == GPIOG) GPIOG_PCLK_DI();
+		else if (pHandle == GPIOH) GPIOH_PCLK_DI();
+	}
 }
 
 /*
