@@ -18,7 +18,8 @@
 
 // #define VIDEO_103	"LED_PUSH_PULL"
 // #define VIDEO_104	"LED_OPEN_DRAIN"
-#define VIDEO_105		  "BUTTOM_LED_PUSH_PULL"
+// #define VIDEO_105		  "BUTTOM_LED_PUSH_PULL"
+#define VIDEO_115		  "PUSH_BUTTOM_INTERRUPT"
 
 #if defined(VIDEO_103)
 void delay(void)
@@ -122,6 +123,25 @@ void video105_button_push_pull_led(void)
 		}
 	}
 }
+
+#elif defined(VIDEO_115)
+void EXTI0_IRQHandler(void)
+{
+	// handle the EXTI0 interrupt
+	GPIO_IrqHandling(0);
+}
+
+void delay(void)
+{
+	uint32_t i;
+	for (i=0; i<500000; ++i) { }
+}
+
+void video115_push_button_interrupt(void)
+{
+
+}
+
 #endif
 
 int main(void)
@@ -132,6 +152,8 @@ int main(void)
 	video104_open_drain_led();
 #elif defined(VIDEO_105)
 	video105_button_push_pull_led();
+#elif defined(VIDEO_115)
+	video115_push_button_interrupt();
 #endif
 	return 0;
 }
