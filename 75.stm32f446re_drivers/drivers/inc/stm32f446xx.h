@@ -149,6 +149,36 @@ typedef struct
 }RCC_RegDef_t;
 
 /*
+ * Note: register of a EXTI
+ */
+typedef struct
+{
+	__vo uint32_t 	IMR;		// 0x00, Interrupt mask register
+	__vo uint32_t 	EMR;		// 0x04, Event mask register
+	__vo uint32_t 	RTSR;		// 0x08, Rising trigger selection register
+	__vo uint32_t 	FTSR;		// 0x0C, Falling trigger selection register
+	__vo uint32_t 	SWIER;		// 0x10, Software interrupt event register
+	__vo uint32_t 	PR;			// 0x14, Pending register
+
+}EXTI_RegDef_t;
+
+/*
+ * Note: register of a SYSCFG
+ */
+typedef struct
+{
+	__vo uint32_t 	MEMRMP;			// 0x00, SYSCFG memory remap register
+	__vo uint32_t 	PMC;			// 0x04, SYSCFG peripheral mode configuration register
+	__vo uint32_t 	EXTICR[4];		// 0x08, 0x0C, 0x10, 0x14, SYSCFG external interrupt configuration register 1-4
+	__vo uint32_t 	RESERVED1[2];	// 0x18, 0x1C
+	__vo uint32_t 	CMPCR;			// 0x20, Compensation cell control register
+	__vo uint32_t 	RESERVED2[2];	// 0x24, 0x28
+	__vo uint32_t 	CFGR;			// 0x2C, SYSCFG configuration register
+
+}SYSCFG_RegDef_t;
+
+
+/*
  * Note: peripheral definition (Peripheral base addresses typecasted to xxx_RegDef_t
  */
 #define GPIOA		((GPIO_RegDef_t *) GPIOA_BASEADDR)
@@ -161,6 +191,20 @@ typedef struct
 #define GPIOH		((GPIO_RegDef_t *) GPIOH_BASEADDR)
 
 #define RCC			((RCC_RegDef_t *) RCC_BASEADDR)
+#define EXTI		((EXTI_RegDef_t *) EXTI_BASEADDR)
+#define SYSCFG		((SYSCFG_RegDef_t *) SYSCFG_BASEADDR)
+
+/*
+ * Return port code for GPIOx base address
+ */
+#define GPIO_BASEADDR_TO_PORTCODE(x)  ( (x == GPIOA)? 0 : \
+										(x == GPIOB)? 1 : \
+										(x == GPIOC)? 2 : \
+										(x == GPIOD)? 3 : \
+										(x == GPIOE)? 4 : \
+										(x == GPIOF)? 5 : \
+										(x == GPIOG)? 6 : 0 )
+
 
 /*
  * Clock Enable macros for GPIOx peripheral
