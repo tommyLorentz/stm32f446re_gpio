@@ -28,14 +28,14 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGpioBase, uint8_t IsEn)
 {
 	if (IsEn == ENABLE)
 	{
-		if (pGpioBase == GPIOA) GPIOA_PCLK_ENABLE();
-		else if (pGpioBase == GPIOB) GPIOB_PCLK_ENABLE();
-		else if (pGpioBase == GPIOC) GPIOC_PCLK_ENABLE();
-		else if (pGpioBase == GPIOD) GPIOD_PCLK_ENABLE();
-		else if (pGpioBase == GPIOE) GPIOE_PCLK_ENABLE();
-		else if (pGpioBase == GPIOF) GPIOF_PCLK_ENABLE();
-		else if (pGpioBase == GPIOG) GPIOG_PCLK_ENABLE();
-		else if (pGpioBase == GPIOH) GPIOH_PCLK_ENABLE();
+		if (pGpioBase == GPIOA) GPIOA_PCLK_EN();
+		else if (pGpioBase == GPIOB) GPIOB_PCLK_EN();
+		else if (pGpioBase == GPIOC) GPIOC_PCLK_EN();
+		else if (pGpioBase == GPIOD) GPIOD_PCLK_EN();
+		else if (pGpioBase == GPIOE) GPIOE_PCLK_EN();
+		else if (pGpioBase == GPIOF) GPIOF_PCLK_EN();
+		else if (pGpioBase == GPIOG) GPIOG_PCLK_EN();
+		else if (pGpioBase == GPIOH) GPIOH_PCLK_EN();
 	}
 	else
 	{
@@ -92,6 +92,8 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 
 		// 2. configure the GPIO port selection in SYSCFG_EXTICR
 		{
+			SYSCFG_PCLK_EN();
+
 			array_index = pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber / 4;
 			position = (pGpioPinHandle->GPIO_PinConfig.GPIO_PinNumber % 4) *4;
 			port_code = GPIO_BASEADDR_TO_PORTCODE(pGpioPinHandle->pGpioBase);
