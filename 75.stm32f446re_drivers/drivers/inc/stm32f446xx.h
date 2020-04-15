@@ -249,6 +249,20 @@ typedef struct
 #define NVIC_PRI_MAX_ORDER			16
 #define NVIC_PRI_BIT_SHIFT			4
 
+/*
+ * Settable IRQ priority of stm32f446xx mcu
+ */
+enum irq_priority_order {
+	NVIC_PRI_EXTI0 = 0,
+	NVIC_PRI_EXTI1,
+	NVIC_PRI_EXTI2,
+	NVIC_PRI_EXTI3,
+	NVIC_PRI_EXTI4,
+	NVIC_PRI_EXTI9_5 = 2,
+	NVIC_PRI_EXTI15_10 = 3,
+	NVIC_PRI_MAX = NVIC_PRI_MAX_ORDER
+};
+
 
 /*
  * Clock Enable macros for GPIOx peripheral

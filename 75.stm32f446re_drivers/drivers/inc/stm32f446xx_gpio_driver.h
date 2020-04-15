@@ -1,8 +1,7 @@
 /*
  * stm32f446xx_gpio_driver.h
  *
- *  Created on: 2020年4月14日
- *      Author: tommy
+ *  Created on: 2020�???4?? *      Author: tommy
  */
 
 #ifndef INC_STM32F446XX_GPIO_DRIVER_H_
@@ -128,10 +127,14 @@ void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGpioBase, uint16_t Value);
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber);
 
 /*
- * IRQ configuration and ISR handling
+ * IRQ configuration
  */
 void GPIO_IrqInteruptConfig(uint8_t IrqPosition, uint8_t IsEn);
 void GPIO_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority);
+
+/*
+ * ISR handling
+ */
 void GPIO_IrqHandling(uint8_t PinNumber);
 
 

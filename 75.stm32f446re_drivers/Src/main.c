@@ -113,7 +113,6 @@ void video105_button_push_pull_led(void)
 	GPIO_PeriClockControl(GPIOC, ENABLE);
 	GPIO_Init(&GpioBtn);
 
-
 	while(1)
 	{
 		if (DISABLE == GPIO_ReadFromInputPin(GpioBtn.pGpioBase, GpioBtn.GPIO_PinConfig.GPIO_PinNumber))
@@ -125,21 +124,53 @@ void video105_button_push_pull_led(void)
 }
 
 #elif defined(VIDEO_115)
-void EXTI0_IRQHandler(void)
-{
-	// handle the EXTI0 interrupt
-	GPIO_IrqHandling(0);
-}
-
 void delay(void)
 {
 	uint32_t i;
 	for (i=0; i<500000; ++i) { }
 }
 
+void EXTI15_10_IRQHandler(void)
+{
+	GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_5);
+	delay();
+
+	// handle the EXTI0 interrupt
+	GPIO_IrqHandling(GPIO_PIN_NO_13);
+}
+
 void video115_push_button_interrupt(void)
 {
+	GPIO_Handle_t GpioLed, GpioBtn;
+	memset(&GpioLed, 0x00, sizeof(GpioLed));
+	memset(&GpioBtn, 0x00, sizeof(GpioBtn));
 
+	GpioLed.pGpioBase = GPIOA;
+	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
+	GpioLed.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_FAST;
+	GpioLed.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
+
+	GPIO_PeriClockControl(GPIOA, ENABLE);
+	GPIO_Init(&GpioLed);
+
+	GpioBtn.pGpioBase = GPIOC;
+	GpioBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	GpioBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IT_FT;
+	GpioBtn.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	GpioBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_LOW;
+	//GpioBtn.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
+
+	GPIO_PeriClockControl(GPIOC, ENABLE);
+	GPIO_Init(&GpioBtn);
+
+	// IRQ configuration
+	GPIO_IrqPriorityConfig(IRQ_POSITION_EXIT15_10, NVIC_PRI_EXTI15_10);
+	GPIO_IrqInteruptConfig(IRQ_POSITION_EXIT15_10, ENABLE);
+
+
+	while(1) { }
 }
 
 #endif
