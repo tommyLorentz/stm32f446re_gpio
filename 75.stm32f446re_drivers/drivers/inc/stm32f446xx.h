@@ -231,18 +231,23 @@ typedef struct
 										(x == GPIOG)? 6 : 0 )
 
 /*
- * IRQ number of stm32f446xx mcu
+ * Fixed IRQ position of stm32f446xx mcu
  * Note: update these macros with valid values according to your mcu
  */
-enum irq_priority_number {
-	IRQ_NO_EXIT0 = 6,
-	IRQ_NO_EXIT1,
-	IRQ_NO_EXIT2,
-	IRQ_NO_EXIT3,
-	IRQ_NO_EXIT4,
-	IRQ_NO_EXIT9_5 = 23,
-	IRQ_NO_EXIT15_10 = 40,
-};
+#define	IRQ_POSITION_EXIT0			6
+#define	IRQ_POSITION_EXIT1			7
+#define	IRQ_POSITION_EXIT2			8
+#define	IRQ_POSITION_EXIT3			9
+#define	IRQ_POSITION_EXIT4			10
+#define	IRQ_POSITION_EXIT9_5		23
+#define	IRQ_POSITION_EXIT15_10		40
+
+/*
+ * Maximum order of NVIC
+ * system only use the higher 4 bits
+ */
+#define NVIC_PRI_MAX_ORDER			16
+#define NVIC_PRI_BIT_SHIFT			4
 
 
 /*

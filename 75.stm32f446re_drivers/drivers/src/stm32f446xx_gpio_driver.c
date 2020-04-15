@@ -278,9 +278,9 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGpioBase, uint8_t PinNumber)
 }
 
 /*
- * IRQ configuration and ISR handling
+ * IRQ configuration
  */
-void GPIO_IrqConfig(uint8_t IrqPosition, uint8_t IrqPriority, uint8_t IsEn)
+void GPIO_IrqInteruptConfig(uint8_t IrqPosition, uint8_t IsEn)
 {
 	__vo uint32_t *pNvicBase;
 
@@ -299,6 +299,24 @@ void GPIO_IrqConfig(uint8_t IrqPosition, uint8_t IrqPriority, uint8_t IsEn)
 	}
 }
 
+/*
+ * IRQ priority configuration
+ */
+void GPIO_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority)
+{
+	__vo uint8_t *pNvicBase;
+
+	// Set priority register
+	{
+		// program ISER register
+		pNvicBase = (__vo uint8_t *) (NVIC_PRI0 + IrqPosition);
+		*pNvicBase = (IrqPriority << NVIC_PRI_BIT_SHIFT); /* only use 4 bit: 16 orders */
+	}
+}
+
+/*
+ * ISR handling
+ */
 void GPIO_IrqHandling(uint8_t PinNumber)
 {
 
