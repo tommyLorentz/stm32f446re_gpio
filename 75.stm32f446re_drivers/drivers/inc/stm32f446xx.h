@@ -23,6 +23,31 @@
 #define GPIO_SET			SET
 #define GPIO_RESET			RESET
 
+
+#define NVIC_GENERIC_OFFSET			0x4U
+
+/* ARM cortex M4 processor NVIC ISERx register Address: Interrupt Set-enable Registers */
+#define NVIC_ISER_BASE				0xE000E100U
+
+/* ARM cortex M4 processor NVIC ISERx register Address: Interrupt Clear-enable Registers */
+#define NVIC_ICER_BASE				0xE000E180U
+
+/* ARM cortex M4 processor NVIC ISPRx register Address: Interrupt Set-pending Registers */
+#define NVIC_ISPR_BASE				0xE000E200U
+
+/* ARM cortex M4 processor NVIC ISERx register Address: Interrupt Clear-pending Registers */
+#define NVIC_ICPR_BASE				0xE000E280U
+
+/* ARM cortex M4 processor NVIC ISERx register Address: Interrupt Active Bit Registers */
+#define NVIC_IABR_BASE				0xE000E300U
+
+/* ARM cortex M4 processor NVIC ISERx register Address: Interrupt Priority Registers */
+#define NVIC_PRI0					0xE000E400U
+
+/* ARM cortex M4 processor NVIC ISERx register Address: Software Trigger Interrupt Register */
+#define NVIC_STIR0					0xE000EF00U
+
+
 /*
  * base addresses of Flash and SRAM memories
  */
