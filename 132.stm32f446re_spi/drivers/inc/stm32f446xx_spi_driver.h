@@ -15,13 +15,13 @@
  */
 typedef struct
 {
-	uint8_t	SPI_DeviceMode;			/* @GPIO_PIN_NUMBERS */
-	uint8_t	SPI_BusConfig;			/* @GPIO_PIN_MODES */
-	uint8_t	SPI_SclkSpeed;			/* @GPIO_PIN_SPEED */
-	uint8_t	SPI_Dff;				/* @GPIO_INTERNAL_PUPD */
-	uint8_t	SPI_Cpol;				/* @GPIO_OUTPUT_TYPE */
-	uint8_t	SPI_Cpha;				/* @GPIO_OUTPUT_TYPE */
-	uint8_t	SPI_Ssm;				/* @GPIO_OUTPUT_TYPE */
+	uint8_t	SPI_DeviceMode;			/* @SPI_DeviceMode */
+	uint8_t	SPI_BusConfig;			/* @SPI_BusConfig */
+	uint8_t	SPI_SclkSpeed;			/* @SPI_SclkSpeed */
+	uint8_t	SPI_Dff;				/* @SPI_Dff */
+	uint8_t	SPI_Cpol;				/* @SPI_Cpol */
+	uint8_t	SPI_Cpha;				/* @SPI_Cpha */
+	uint8_t	SPI_Ssm;				/* @SPI_Ssm */
 
 }SPI_PinConfig_t;
 
@@ -36,6 +36,55 @@ typedef struct {
 
 }SPI_Handle_t;
 
+
+/*
+ * @SPI_DeviceMode
+ */
+#define SPI_DEVICE_MODE_MASTER		0
+#define SPI_DEVICE_MODE_SLAVE		1
+
+/*
+ * @SPI_BusConfig
+ */
+#define SPI_BUS_CONFIG_FULL_DUPLEX		1
+#define SPI_BUS_CONFIG_HALF_DUPLEX		2
+#define SPI_BUS_CONFIG_SIMPLEX_RX		3
+
+/*
+ * @SPI_SclkSpeed
+ */
+#define SPI_SCLK_SPEED_DIV2				0
+#define SPI_SCLK_SPEED_DIV4				1
+#define SPI_SCLK_SPEED_DIV8				2
+#define SPI_SCLK_SPEED_DIV16			3
+#define SPI_SCLK_SPEED_DIV32			4
+#define SPI_SCLK_SPEED_DIV64			5
+#define SPI_SCLK_SPEED_DIV128			6
+#define SPI_SCLK_SPEED_DIV256			7
+
+/*
+ * @SPI_Dff
+ */
+#define SPI_DFF_8BITS		0
+#define SPI_DFF_16BITS		1
+
+/*
+ * @SPI_Cpol
+ */
+#define SPI_CPOL_0			0
+#define SPI_CPOL_1			1
+
+/*
+ * @SPI_Cpha
+ */
+#define SPI_CPHA_0			0
+#define SPI_CPHA_1			1
+
+/*
+ * @SPI_Ssm
+ */
+#define SPI_SSM_DI			0
+#define SPI_SSM_EN			1
 
 /*
  * Peripheral clock setup
