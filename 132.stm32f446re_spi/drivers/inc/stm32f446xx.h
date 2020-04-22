@@ -368,13 +368,22 @@ enum irq_priority_order {
 /*
  * RESET macros for GPIOx peripheral
  */
-#define GPIOA_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 0) ); (RCC->AHB1RSTR &= ~(1 << 0) ); }while(0)	// gpio port reset
-#define GPIOB_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 1) ); (RCC->AHB1RSTR &= ~(1 << 1) ); }while(0)	// gpio port reset
-#define GPIOC_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 2) ); (RCC->AHB1RSTR &= ~(1 << 2) ); }while(0)	// gpio port reset
-#define GPIOD_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 3) ); (RCC->AHB1RSTR &= ~(1 << 3) ); }while(0)	// gpio port reset
-#define GPIOE_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 4) ); (RCC->AHB1RSTR &= ~(1 << 4) ); }while(0)	// gpio port reset
-#define GPIOF_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 5) ); (RCC->AHB1RSTR &= ~(1 << 5) ); }while(0)	// gpio port reset
-#define GPIOG_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 6) ); (RCC->AHB1RSTR &= ~(1 << 6) ); }while(0)	// gpio port reset
-#define GPIOH_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 7) ); (RCC->AHB1RSTR &= ~(1 << 7) ); }while(0)	// gpio port reset
+#define GPIOA_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 0) ); (RCC->AHB1RSTR &= ~(1 << 0) ); }while(0)
+#define GPIOB_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 1) ); (RCC->AHB1RSTR &= ~(1 << 1) ); }while(0)
+#define GPIOC_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 2) ); (RCC->AHB1RSTR &= ~(1 << 2) ); }while(0)
+#define GPIOD_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 3) ); (RCC->AHB1RSTR &= ~(1 << 3) ); }while(0)
+#define GPIOE_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 4) ); (RCC->AHB1RSTR &= ~(1 << 4) ); }while(0)
+#define GPIOF_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 5) ); (RCC->AHB1RSTR &= ~(1 << 5) ); }while(0)
+#define GPIOG_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 6) ); (RCC->AHB1RSTR &= ~(1 << 6) ); }while(0)
+#define GPIOH_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 7) ); (RCC->AHB1RSTR &= ~(1 << 7) ); }while(0)
+
+/*
+ * RESET macros for SPIx peripheral
+ */
+#define SPI1_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 12) ); (RCC->APB2RSTR &= ~(1 << 12) ); }while(0)
+#define SPI2_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 14) ); (RCC->APB1RSTR &= ~(1 << 14) ); }while(0)
+#define SPI3_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 15) ); (RCC->APB1RSTR &= ~(1 << 15) ); }while(0)
+#define SPI4_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 13) ); (RCC->APB2RSTR &= ~(1 << 13) ); }while(0)
+
 
 #endif /* INC_STM32F446XX_H_ */
