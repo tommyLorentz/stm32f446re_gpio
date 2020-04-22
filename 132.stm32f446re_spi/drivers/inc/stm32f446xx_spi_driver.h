@@ -86,6 +86,7 @@ typedef struct {
 #define SPI_SSM_DI			0
 #define SPI_SSM_EN			1
 
+
 /*
  * Peripheral clock setup
  */

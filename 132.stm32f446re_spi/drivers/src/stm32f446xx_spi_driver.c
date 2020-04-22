@@ -46,6 +46,36 @@ void SPI_PeriClockControl(SPI_RegDef_t *pBase, uint8_t IsEn)
  */
 void SPI_Init(SPI_Handle_t *pSpiPinHandle)
 {
+	uint32_t reg = 0, temp;
+	// Configure the SPI_CR1 register
+
+	//  1. configure the device mode
+	if (pSpiPinHandle->SPI_PinConfig.SPI_DeviceMode == SPI_DEVICE_MODE_MASTER)
+	{
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << 2);
+	}
+	else
+	{
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << 2);
+	}
+
+	//  1. configure BIDIMODE: Bidirectional data mode enable
+	if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_FULL_DUPLEX)
+	{
+		// uni-direction
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << 15);
+	}
+	else if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_HALF_DUPLEX)
+	{
+		// bi-direction
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << 15);
+	}
+	else if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RX)
+	{
+		// uni-direction and rx-only
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << 15);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << 10);
+	}
 
 }
 
