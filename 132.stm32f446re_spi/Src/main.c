@@ -60,6 +60,7 @@ void SPI2_Init(void)
 	spiSettings.SPI_PinConfig.SPI_Cpol = SPI_CPOL_0;
 	spiSettings.SPI_PinConfig.SPI_Cpha = SPI_CPHA_0;
 	spiSettings.SPI_PinConfig.SPI_Ssm = SPI_SSM_EN; // software slave management enabled for NSS pin
+	spiSettings.SPI_PinConfig.SPI_Lsbfirst = SPI_LSB_FIRST;
 	SPI_Init(&spiSettings);
 }
 
@@ -67,13 +68,19 @@ int main(void)
 {
 	int8_t user_data[] = "Hello world";
 
+	// 26.3.7 SPI configuration
+	// 1. Write proper GPIO registers: Configure GPIO for MOSI, MISO and SCK pins.
 	SPI_GpioInit();
-	SPI2_Init();
 
-	// enable the SPI2 peripheral
+	// 2. Write to the SPI_CR1 register
+	SPI2_Init();
+	SPI_SsiConfig(SPI2, ENABLE);
+
+	// NSS output enable
 	SPI_PeripheralControl(SPI2, ENABLE);
 
 	SPI_SendData(SPI2, (uint8_t *) user_data, strlen(user_data));
 
+	SPI_PeripheralControl(SPI2, DISABLE);
 	for(;;);
 }

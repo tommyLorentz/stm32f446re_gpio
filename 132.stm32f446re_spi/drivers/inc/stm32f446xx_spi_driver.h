@@ -22,6 +22,7 @@ typedef struct
 	uint8_t	SPI_Cpol;				/* @SPI_Cpol */
 	uint8_t	SPI_Cpha;				/* @SPI_Cpha */
 	uint8_t	SPI_Ssm;				/* @SPI_Ssm */
+	uint8_t	SPI_Lsbfirst;			/* @SPI_Lsbfirst */
 
 }SPI_PinConfig_t;
 
@@ -87,6 +88,13 @@ typedef struct {
 #define SPI_SSM_EN			1
 
 /*
+ * @SPI_Lsbfirst
+ */
+#define SPI_MSB_FIRST		0
+#define SPI_LSB_FIRST		1
+
+
+/*
  * SPI related status flags definition
  */
 #define SPI_TXE_FLAG		(0x1 << SPI_SR_TXE_OFFSET)
@@ -130,6 +138,6 @@ void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle);
  * Other peripheral control APIs
  */
 void SPI_PeripheralControl(SPI_RegDef_t *pBase, uint8_t IsEn);
-
+void SPI_SsiConfig(SPI_RegDef_t *pBase, uint8_t IsEn);
 
 #endif /* INC_STM32F446XX_SPI_DRIVER_H_ */

@@ -108,17 +108,33 @@ void SPI_Init(SPI_Handle_t *pSpiPinHandle)
 	SPI_PeriClockControl(pSpiPinHandle->pSpiBase, ENABLE);
 
 	// Configure the SPI_CR1 register
-	//  1. configure the device mode
-	if (pSpiPinHandle->SPI_PinConfig.SPI_DeviceMode == SPI_DEVICE_MODE_MASTER)
+	// a) Configure the serial clock baud rate using the BR[2:0] bits
+	temp = pSpiPinHandle->SPI_PinConfig.SPI_SclkSpeed & (0x07 << SPI_CR1_BR_OFFSET);
+	reg = pSpiPinHandle->pSpiBase->CR1 & ~(0x07 << SPI_CR1_BR_OFFSET);
+	pSpiPinHandle->pSpiBase->CR1 = temp | reg;
+
+
+	// b) Configure the CPOL and CPHA bits
+	if (pSpiPinHandle->SPI_PinConfig.SPI_Cpol == SPI_CPOL_1)
 	{
-		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_MSTR_OFFSET);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_CPOL_OFFSET);
 	}
 	else
 	{
-		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_MSTR_OFFSET);
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_CPOL_OFFSET);
 	}
 
-	//  1. configure BIDIMODE: Bidirectional data mode enable
+	// b) Configure the CPOL and CPHA bits
+	if (pSpiPinHandle->SPI_PinConfig.SPI_Cpha == SPI_CPHA_1)
+	{
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_CPHA_OFFSET);
+	}
+	else
+	{
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_CPHA_OFFSET);
+	}
+
+	// c) Select simplex or half-duplex mode by configuring RXONLY or BIDIMODE and BIDIOE
 	if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_FULL_DUPLEX)
 	{
 		// uni-direction
@@ -136,29 +152,40 @@ void SPI_Init(SPI_Handle_t *pSpiPinHandle)
 		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_RXONLY_OFFSET);
 	}
 
-	// configure the spi serial clock speed(baud rate)
-	temp = pSpiPinHandle->SPI_PinConfig.SPI_SclkSpeed & (0x07 << SPI_CR1_BR_OFFSET);
-	reg = pSpiPinHandle->pSpiBase->CR1 & ~(0x07 << SPI_CR1_BR_OFFSET);
-	pSpiPinHandle->pSpiBase->CR1 = temp | reg;
-
-	// configure the SPI_CPOL
-	if (pSpiPinHandle->SPI_PinConfig.SPI_Cpol == SPI_CPOL_1)
+	// d) Configure the LSBFIRST bit to define the frame format
+	if (pSpiPinHandle->SPI_PinConfig.SPI_Lsbfirst == SPI_LSB_FIRST)
 	{
-		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_CPOL_OFFSET);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_LSBFIRST_OFFSET);
 	}
 	else
 	{
-		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_CPOL_OFFSET);
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_LSBFIRST_OFFSET);
 	}
 
-	// configure the SPI_CPHA
-	if (pSpiPinHandle->SPI_PinConfig.SPI_Cpol == SPI_CPHA_1)
+	// e) Configure the CRCEN and CRCEN bits if CRC is needed
+
+	// f) Configure SSM and SSI
+	if (pSpiPinHandle->SPI_PinConfig.SPI_Ssm == SPI_SSM_EN)
 	{
-		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_CPHA_OFFSET);
+		// Software slave management enabled
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_SSM_OFFSET);
+		// pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_SSI_OFFSET);
 	}
 	else
 	{
-		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_CPHA_OFFSET);
+		// Software slave management disabled
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_SSM_OFFSET);
+	}
+
+
+	//  1. configure the device mode
+	if (pSpiPinHandle->SPI_PinConfig.SPI_DeviceMode == SPI_DEVICE_MODE_MASTER)
+	{
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_MSTR_OFFSET);
+	}
+	else
+	{
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_MSTR_OFFSET);
 	}
 }
 
@@ -178,8 +205,24 @@ void SPI_PeripheralControl(SPI_RegDef_t *pBase, uint8_t IsEn)
 	if (IsEn == ENABLE)
 	{
 		pBase->CR1 |= (0x01 << SPI_CR1_SPE_OFFSET);
-	}else
+	}
+	else
 	{
 		pBase->CR1 &= ~(0x01 << SPI_CR1_SPE_OFFSET);
+	}
+}
+
+
+/*
+ * Other peripheral control APIs
+ */
+void SPI_SsiConfig(SPI_RegDef_t *pBase, uint8_t IsEn)
+{
+	if (IsEn == ENABLE)
+	{
+		pBase->CR1 |= (0x01 << SPI_CR1_SSI_OFFSET);
+	}else
+	{
+		pBase->CR1 &= ~(0x01 << SPI_CR1_SSI_OFFSET);
 	}
 }
