@@ -26,7 +26,7 @@ typedef struct
 }SPI_PinConfig_t;
 
 /*
- * This is a Handle structure for a GPIO pin
+ * This is a Handle structure for a SPI pin
  */
 typedef struct {
 
@@ -34,6 +34,41 @@ typedef struct {
 	SPI_RegDef_t	*pSpiBase;		/* This holds the base address of the SPI port to which the pin belongs */
 	SPI_PinConfig_t SPI_PinConfig;	/* This holds SPI pin configuration settings */
 
-}SPI_handle_t;
+}SPI_Handle_t;
+
+
+/*
+ * Peripheral clock setup
+ */
+void SPI_PeriClockControl(SPI_RegDef_t *pBase, uint8_t IsEn);
+
+/*
+ * Init and Deinit
+ */
+void SPI_Init(SPI_Handle_t *pSpiPinHandle);
+void SPI_DeInit(SPI_Handle_t *pSpiPinHandle);
+
+/*
+ * Data Send and Receive
+ */
+void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, uint32_t Len);
+void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, uint32_t Len);
+
+/*
+ * IRQ configuration
+ */
+void SPI_IrqInteruptConfig(uint8_t IrqPosition, uint8_t IsEn);
+void SPI_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority);
+
+/*
+ * ISR handling
+ */
+void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle);
+
+/*
+ * Other peripheral control APIs
+ */
+
+
 
 #endif /* INC_STM32F446XX_SPI_DRIVER_H_ */
