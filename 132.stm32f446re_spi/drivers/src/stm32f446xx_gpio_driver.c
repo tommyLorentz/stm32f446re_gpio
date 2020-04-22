@@ -56,6 +56,8 @@ void GPIO_Init(GPIO_Handle_t *pGpioPinHandle)
 {
 	uint32_t reg = 0, temp;
 
+	GPIO_PeriClockControl(pGpioPinHandle->pGpioBase, ENABLE);
+
 	// 1. configure the mode of gpio pin
 	if (pGpioPinHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
 	{

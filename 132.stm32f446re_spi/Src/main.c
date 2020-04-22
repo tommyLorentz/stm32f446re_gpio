@@ -14,7 +14,7 @@
 #include "stm32f446xx.h"
 #include "stm32f446xx_spi_driver.h"
 #include "stm32f446xx_gpio_driver.h"
-
+#include "string.h"
 /*
  * PB12 --> SPI2_NSS
  * PB13 --> SPI2_SCK
@@ -49,10 +49,28 @@ void SPI_GpioInit(void)
 	GPIO_Init(&gpioSettings);
 }
 
+void SPI2_Init(void)
+{
+	SPI_Handle_t spiSettings;
+	spiSettings.pSpiBase = SPI2;
+	spiSettings.SPI_PinConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
+	spiSettings.SPI_PinConfig.SPI_BusConfig = SPI_BUS_CONFIG_FULL_DUPLEX;
+	spiSettings.SPI_PinConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV2;
+	spiSettings.SPI_PinConfig.SPI_Dff = SPI_DFF_8BITS;
+	spiSettings.SPI_PinConfig.SPI_Cpol = SPI_CPOL_0;
+	spiSettings.SPI_PinConfig.SPI_Cpha = SPI_CPHA_0;
+	spiSettings.SPI_PinConfig.SPI_Ssm = SPI_SSM_EN; // software slave management enabled for NSS pin
+	SPI_Init(&spiSettings);
+}
+
 int main(void)
 {
-	SPI_GpioInit();
+	int8_t user_data[] = "Hello world";
 
+	SPI_GpioInit();
+	SPI2_Init();
+
+	SPI_SendData(SPI2, (uint8_t *) user_data, strlen(user_data));
 
 	for(;;);
 }

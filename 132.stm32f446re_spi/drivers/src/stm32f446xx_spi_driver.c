@@ -103,8 +103,11 @@ void SPI_PeriClockControl(SPI_RegDef_t *pBase, uint8_t IsEn)
 void SPI_Init(SPI_Handle_t *pSpiPinHandle)
 {
 	uint32_t reg = 0, temp;
-	// Configure the SPI_CR1 register
 
+	// Enable peripheral clock
+	SPI_PeriClockControl(pSpiPinHandle->pSpiBase, ENABLE);
+
+	// Configure the SPI_CR1 register
 	//  1. configure the device mode
 	if (pSpiPinHandle->SPI_PinConfig.SPI_DeviceMode == SPI_DEVICE_MODE_MASTER)
 	{
