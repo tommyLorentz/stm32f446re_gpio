@@ -86,6 +86,15 @@ typedef struct {
 #define SPI_SSM_DI			0
 #define SPI_SSM_EN			1
 
+/*
+ * SPI related status flags definition
+ */
+#define SPI_TXE_FLAG		(0x1 << SPI_SR_TXE_OFFSET)
+
+/*
+ * Get SPI register status
+ */
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pBase, uint32_t FlagName);
 
 /*
  * Peripheral clock setup

@@ -22,7 +22,8 @@
 #define RESET				0
 #define GPIO_SET			SET
 #define GPIO_RESET			RESET
-
+#define FLAG_SET			SET
+#define FLAG_RESET			RESET
 
 #define NVIC_GENERIC_OFFSET			0x4U
 
@@ -335,6 +336,9 @@ enum irq_priority_order {
 #define SPI_SR_CHSIDE_OFFSET		2	/* Channel side */
 #define SPI_SR_TXE_OFFSET			1	/* Transmit buffer empty */
 #define SPI_SR_RXNE_OFFSET			0	/* Receive buffer not empty */
+
+#define SPI_TXE_EMPTY		1
+#define SPI_TXE_NEMPTY		0
 
 /*
  * Clock Enable macros for GPIOx peripheral

@@ -1,12 +1,11 @@
 /*
  * stm32f446xx_gpio_driver.c
  *
- *  Created on: 2020å¹???4??
+ *  Created on: 2020ï¿½???4??
  *      Author: tommy
  */
 
 #include "stm32f446xx_gpio_driver.h"
-
 
 /*
  * Peripheral clock setup

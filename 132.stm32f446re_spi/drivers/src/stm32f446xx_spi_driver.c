@@ -6,6 +6,51 @@
  */
 
 #include <stm32f446xx_spi_driver.h>
+/*
+ * Get SPI register status
+ */
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pBase, uint32_t FlagName)
+{
+	if (pBase->SR & FlagName)
+	{
+		return FLAG_SET;
+	}
+	else
+	{
+		return FLAG_RESET;
+	}
+}
+
+/*
+ * @fn          - SPI_PeriClockControl
+ *
+ * @brief		- This function enable and disables peripheral clock for the given SPI port
+ *
+ * @param[in]   - base address of the gpio peripheral
+ * @param[in]   - ENABLE or DISABLE macros
+ * @param[in]   -
+ *
+ * @return		- none
+ *
+ * @Note        - none
+ *
+ */
+void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, uint32_t Len)
+{
+	while(Len > 0)
+	{
+		// 1. wait until TXE buffer is empty
+		while(SPI_TXE_NEMPTY == SPI_GetFlagStatus(pBase, SPI_TXE_FLAG)){}
+
+
+	}
+}
+
+void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, uint32_t Len)
+{
+
+}
+
 
 /*
  * Peripheral clock setup
