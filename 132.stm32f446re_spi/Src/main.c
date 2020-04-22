@@ -70,6 +70,9 @@ int main(void)
 	SPI_GpioInit();
 	SPI2_Init();
 
+	// enable the SPI2 peripheral
+	SPI_PeripheralControl(SPI2, ENABLE);
+
 	SPI_SendData(SPI2, (uint8_t *) user_data, strlen(user_data));
 
 	for(;;);

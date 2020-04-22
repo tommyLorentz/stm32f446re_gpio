@@ -169,3 +169,17 @@ void SPI_DeInit(SPI_Handle_t *pSpiPinHandle)
 	else if (pSpiPinHandle->pSpiBase == SPI3) SPI3_REG_RESET();
 	else if (pSpiPinHandle->pSpiBase == SPI4) SPI4_REG_RESET();
 }
+
+/*
+ * Other peripheral control APIs
+ */
+void SPI_PeripheralControl(SPI_RegDef_t *pBase, uint8_t IsEn)
+{
+	if (IsEn == ENABLE)
+	{
+		pBase->CR1 |= (0x01 << SPI_CR1_SPE_OFFSET);
+	}else
+	{
+		pBase->CR1 &= ~(0x01 << SPI_CR1_SPE_OFFSET);
+	}
+}

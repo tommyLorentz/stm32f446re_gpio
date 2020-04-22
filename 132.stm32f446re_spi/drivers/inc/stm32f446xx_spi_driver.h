@@ -129,7 +129,7 @@ void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle);
 /*
  * Other peripheral control APIs
  */
-
+void SPI_PeripheralControl(SPI_RegDef_t *pBase, uint8_t IsEn);
 
 
 #endif /* INC_STM32F446XX_SPI_DRIVER_H_ */
