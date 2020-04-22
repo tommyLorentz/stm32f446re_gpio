@@ -12,9 +12,47 @@
 #endif
 
 #include "stm32f446xx.h"
-#include <stm32f446xx_spi_driver.h>
+#include "stm32f446xx_spi_driver.h"
+#include "stm32f446xx_gpio_driver.h"
+
+/*
+ * PB12 --> SPI2_NSS
+ * PB13 --> SPI2_SCK
+ * PB14 --> SPI2_MISO
+ * PB15 --> SPI2_MOSI
+ * ALT: function mode: 5
+ */
+void SPI_GpioInit(void)
+{
+	GPIO_Handle_t gpioSettings;
+	gpioSettings.pGpioBase = GPIOB;
+	gpioSettings.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ALT;
+	//gpioSettings.GPIO_PinConfig.GPIO_PinSpeed
+	gpioSettings.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	gpioSettings.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
+	gpioSettings.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
+
+	// PB13 --> SPI2_SCK
+	gpioSettings.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	GPIO_Init(&gpioSettings);
+
+	// PB15 --> SPI2_MOSI
+	gpioSettings.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15;
+	GPIO_Init(&gpioSettings);
+
+	// PB14 --> SPI2_MISO
+	gpioSettings.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
+	GPIO_Init(&gpioSettings);
+
+	// PB12 --> SPI2_NSS
+	gpioSettings.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+	GPIO_Init(&gpioSettings);
+}
 
 int main(void)
 {
+	SPI_GpioInit();
+
+
 	for(;;);
 }
