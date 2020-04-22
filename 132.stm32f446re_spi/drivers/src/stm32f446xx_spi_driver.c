@@ -52,31 +52,55 @@ void SPI_Init(SPI_Handle_t *pSpiPinHandle)
 	//  1. configure the device mode
 	if (pSpiPinHandle->SPI_PinConfig.SPI_DeviceMode == SPI_DEVICE_MODE_MASTER)
 	{
-		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << 2);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_MSTR_OFFSET);
 	}
 	else
 	{
-		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << 2);
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_MSTR_OFFSET);
 	}
 
 	//  1. configure BIDIMODE: Bidirectional data mode enable
 	if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_FULL_DUPLEX)
 	{
 		// uni-direction
-		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << 15);
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_BIDIMODE_OFFSET);
 	}
 	else if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_HALF_DUPLEX)
 	{
 		// bi-direction
-		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << 15);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_BIDIMODE_OFFSET);
 	}
 	else if (pSpiPinHandle->SPI_PinConfig.SPI_BusConfig == SPI_BUS_CONFIG_SIMPLEX_RX)
 	{
 		// uni-direction and rx-only
-		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << 15);
-		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << 10);
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_BIDIMODE_OFFSET);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_RXONLY_OFFSET);
 	}
 
+	// configure the spi serial clock speed(baud rate)
+	temp = pSpiPinHandle->SPI_PinConfig.SPI_SclkSpeed & (0x07 << SPI_CR1_BR_OFFSET);
+	reg = pSpiPinHandle->pSpiBase->CR1 & ~(0x07 << SPI_CR1_BR_OFFSET);
+	pSpiPinHandle->pSpiBase->CR1 = temp | reg;
+
+	// configure the SPI_CPOL
+	if (pSpiPinHandle->SPI_PinConfig.SPI_Cpol == SPI_CPOL_1)
+	{
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_CPOL_OFFSET);
+	}
+	else
+	{
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_CPOL_OFFSET);
+	}
+
+	// configure the SPI_CPHA
+	if (pSpiPinHandle->SPI_PinConfig.SPI_Cpol == SPI_CPHA_1)
+	{
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_CPHA_OFFSET);
+	}
+	else
+	{
+		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_CPHA_OFFSET);
+	}
 }
 
 void SPI_DeInit(SPI_Handle_t *pSpiPinHandle)

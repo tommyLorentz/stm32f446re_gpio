@@ -291,6 +291,51 @@ enum irq_priority_order {
 };
 
 
+/**************************************************
+ * Bit position of SPI peripheral
+ *************************************************/
+/*
+ * Bit position definitions SPI_CR1
+ */
+#define SPI_CR1_CPHA_OFFSET			0	/* Clock phase */
+#define SPI_CR1_CPOL_OFFSET			1	/* Clock polarity */
+#define SPI_CR1_MSTR_OFFSET			2	/* Master selection */
+#define SPI_CR1_BR_OFFSET			3	/* Baud rate control */
+#define SPI_CR1_SPE_OFFSET			6	/* SPI enable */
+#define SPI_CR1_LSBFIRST_OFFSET		7	/* Frame format */
+#define SPI_CR1_SSI_OFFSET			8	/* Internal slave select */
+#define SPI_CR1_SSM_OFFSET			9	/* Software slave management */
+#define SPI_CR1_RXONLY_OFFSET		10	/* Receive only mode enable */
+#define SPI_CR1_DFF_OFFSET			11	/* Data frame format */
+#define SPI_CR1_CRCNEXT_OFFSET		12	/* CRC transfer next */
+#define SPI_CR1_CRCEN_OFFSET		13	/* Hardware CRC calculation enable */
+#define SPI_CR1_BIDIOE_OFFSET		14	/* Output enable in bidirectional mode */
+#define SPI_CR1_BIDIMODE_OFFSET		15	/* Bidirectional data mode enable */
+
+/*
+ * Bit position definitions SPI_CR2
+ */
+#define SPI_CR2_TXEIE_OFFSET		7	/* Tx buffer empty interrupt enable */
+#define SPI_CR2_RXNEIE_OFFSET		6	/* RX buffer not empty interrupt enable */
+#define SPI_CR2_ERRIE_OFFSET		5	/* Error interrupt enable */
+#define SPI_CR2_FRF_OFFSET			4	/* Frame format */
+#define SPI_CR2_SSOE_OFFSET			2	/* SS output enable */
+#define SPI_CR2_TXDMAEN_OFFSET		1	/* Tx buffer DMA enable */
+#define SPI_CR2_RXDMAEN_OFFSET		0	/* Rx buffer DMA enable */
+
+/*
+ * Bit position definitions SPI_SR
+ */
+#define SPI_SR_FRE_OFFSET			8	/* Frame Error */
+#define SPI_SR_BSY_OFFSET			7	/* Busy flag */
+#define SPI_SR_OVR_OFFSET			6	/* Overrun flag */
+#define SPI_SR_MODF_OFFSET			5	/* Mode fault */
+#define SPI_SR_CRCERR_OFFSET		4	/* CRC error flag */
+#define SPI_SR_UDR_OFFSET			3	/* Underrun flag */
+#define SPI_SR_CHSIDE_OFFSET		2	/* Channel side */
+#define SPI_SR_TXE_OFFSET			1	/* Transmit buffer empty */
+#define SPI_SR_RXNE_OFFSET			0	/* Receive buffer not empty */
+
 /*
  * Clock Enable macros for GPIOx peripheral
  */
