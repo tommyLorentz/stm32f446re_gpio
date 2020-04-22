@@ -26,27 +26,38 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pBase, uint32_t FlagName)
  *
  * @brief		- This function enable and disables peripheral clock for the given SPI port
  *
- * @param[in]   - base address of the gpio peripheral
+ * @param[in]   - base address of the spi peripheral
  * @param[in]   - ENABLE or DISABLE macros
  * @param[in]   -
  *
  * @return		- none
  *
- * @Note        - none
+ * @Note        - Blocking call
  *
  */
-void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, uint32_t Len)
+void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, int32_t Len)
 {
 	while(Len > 0)
 	{
 		// 1. wait until TXE buffer is empty
 		while(SPI_TXE_NEMPTY == SPI_GetFlagStatus(pBase, SPI_TXE_FLAG)){}
 
-
+		// check the DFF bit in data format
+		if (pBase->CR1 & (0x01 << SPI_CR1_DFF_OFFSET))
+		{
+			pBase->DR = *(( uint16_t *) pTxBuffer);
+			Len -= 2;
+			( uint16_t *) pTxBuffer++;
+		}else
+		{
+			pBase->DR = *(( uint8_t *) pTxBuffer);
+			Len -= 1;
+			pTxBuffer++;
+		}
 	}
 }
 
-void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, uint32_t Len)
+void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, int32_t Len)
 {
 
 }

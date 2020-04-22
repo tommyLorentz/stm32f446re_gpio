@@ -212,7 +212,7 @@ typedef struct
 	__vo uint32_t 	CR1;			// 0x00, SPI control register 1
 	__vo uint32_t 	CR2;			// 0x04, SPI control register 2
 	__vo uint32_t 	SR;				// 0x08, SPI status register
-	__vo uint32_t 	RR;				// 0x0C, SPI data register
+	__vo uint32_t 	DR;				// 0x0C, SPI data register
 	__vo uint32_t 	CRCPR;			// 0x10, SPI CRC polynomial register
 	__vo uint32_t 	RXCRCR;			// 0x14, SPI RX CRC register
 	__vo uint32_t 	TXCRCR;			// 0x18, SPI TX CRC register

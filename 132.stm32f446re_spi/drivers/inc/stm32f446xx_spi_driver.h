@@ -90,6 +90,8 @@ typedef struct {
  * SPI related status flags definition
  */
 #define SPI_TXE_FLAG		(0x1 << SPI_SR_TXE_OFFSET)
+#define SPI_RXNE_FLAG		(0x1 << SPI_SR_RXNE_OFFSET)
+#define SPI_BSY_FLAG		(0x1 << SPI_SR_BSY_OFFSET)
 
 /*
  * Get SPI register status
@@ -110,8 +112,8 @@ void SPI_DeInit(SPI_Handle_t *pSpiPinHandle);
 /*
  * Data Send and Receive
  */
-void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, uint32_t Len);
-void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, uint32_t Len);
+void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, int32_t Len);
+void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, int32_t Len);
 
 /*
  * IRQ configuration
