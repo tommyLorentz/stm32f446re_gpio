@@ -110,9 +110,15 @@ typedef struct {
 /*
  * SPI related status flags definition
  */
-#define SPI_TXE_FLAG		(0x1 << SPI_SR_TXE_OFFSET)
-#define SPI_RXNE_FLAG		(0x1 << SPI_SR_RXNE_OFFSET)
-#define SPI_BSY_FLAG		(0x1 << SPI_SR_BSY_OFFSET)
+#define SPI_SR_FRE_FLAG		(0x1 << SPI_SR_FRE_OFFSET)		/* Frame Error */
+#define SPI_SR_BSY_FLAG		(0x1 << SPI_SR_BSY_OFFSET)		/* Busy flag */
+#define SPI_SR_OVR_FLAG		(0x1 << SPI_SR_OVR_OFFSET)		/* Overrun flag */
+#define SPI_SR_MODF_FLAG	(0x1 << SPI_SR_MODF_OFFSET)		/* Mode fault */
+#define SPI_SR_CRCERR_FLAG	(0x1 << SPI_SR_CRCERR_OFFSET)	/* CRC error flag */
+#define SPI_SR_UDR_FLAG		(0x1 << SPI_SR_UDR_OFFSET)		/* Underrun flag */
+#define SPI_SR_CHSIDE_FLAG	(0x1 << SPI_SR_CHSIDE_OFFSET)	/* Channel side */
+#define SPI_SR_TXE_FLAG		(0x1 << SPI_SR_TXE_OFFSET)		/* Transmit buffer empty */
+#define SPI_SR_RXNE_FLAG	(0x1 << SPI_SR_RXNE_OFFSET)		/* Receive buffer not empty */
 
 /*
  * Get SPI register status
@@ -148,7 +154,7 @@ void SPI_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority);
 /*
  * ISR handling
  */
-void SPI_IrqHandling(uint8_t PinNumber);
+void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle);
 
 /*
  * Other peripheral control APIs

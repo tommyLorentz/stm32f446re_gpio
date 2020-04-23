@@ -180,7 +180,7 @@ int main(void)
 
 
 	// Wait SPI until it's not busy
-	while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG)) {}
+	while (SPI_GetFlagStatus(SPI2, SPI_SR_BSY_FLAG)) {}
 
 	SPI_PeripheralEnableConfig(SPI2, DISABLE);
 	for(;;);

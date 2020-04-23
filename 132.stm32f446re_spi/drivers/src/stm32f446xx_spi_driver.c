@@ -6,6 +6,27 @@
  */
 
 #include <stm32f446xx_spi_driver.h>
+
+static void spi_txe_interrupt_handle(SPI_Handle_t *pSpiPinHandle);
+static void spi_rxne_interrupt_handle(SPI_Handle_t *pSpiPinHandle);
+static void spi_overrun_interrupt_handle(SPI_Handle_t *pSpiPinHandle);
+
+static void spi_txe_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
+{
+
+}
+
+static void spi_rxne_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
+{
+
+}
+
+static void spi_overrun_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
+{
+
+}
+
+
 /*
  * Get SPI register status
  */
@@ -40,7 +61,7 @@ void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, int32_t Len)
 	while(Len > 0)
 	{
 		// 1. wait until TXE buffer is empty
-		while(SPI_TXE_NEMPTY == SPI_GetFlagStatus(pBase, SPI_TXE_FLAG)){}
+		while(SPI_TXE_NEMPTY == SPI_GetFlagStatus(pBase, SPI_SR_TXE_FLAG)){}
 
 		// check the DFF bit in data format
 		if (pBase->CR1 & (0x01 << SPI_CR1_DFF_OFFSET))
@@ -62,7 +83,7 @@ void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, int32_t Len)
 	while(Len > 0)
 	{
 		// 1. wait until TXE buffer is empty
-		while(SPI_RXNE_EMPTY == SPI_GetFlagStatus(pBase, SPI_RXNE_FLAG)){}
+		while(SPI_RXNE_EMPTY == SPI_GetFlagStatus(pBase, SPI_SR_RXNE_FLAG)){}
 
 		// check the DFF bit in data format
 		if (pBase->CR1 & (0x01 << SPI_CR1_DFF_OFFSET))
@@ -326,13 +347,38 @@ void SPI_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority)
 /*
  * ISR handling
  */
-void SPI_IrqHandling(uint8_t PinNumber)
+void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle)
 {
-	// clear the exti pr register corresponding to the pin
-	if (EXTI->PR & (0x1 << PinNumber))
+	uint8_t temp1, temp2;
+	// check for TXE flag
+	temp1 = SPI_GetFlagStatus(pSpiPinHandle->pSpiBase, SPI_SR_TXE_FLAG);
+	/* Tx buffer empty interrupt enable */
+	temp2 = pSpiPinHandle->pSpiBase->CR2 & (0x1 << SPI_CR2_TXEIE_OFFSET);
+
+	if (temp1 && temp2)
 	{
-		// write 1 to clear
-		EXTI->PR |= (0x1 << PinNumber);
+		// handle TXE
+		spi_txe_interrupt_handle(pSpiPinHandle);
+	}
+
+	// check for RXNE flag
+	temp1 = SPI_GetFlagStatus(pSpiPinHandle->pSpiBase, SPI_SR_RXNE_FLAG);
+	/* Rx buffer not empty interrupt enable */
+	temp2 = pSpiPinHandle->pSpiBase->CR2 & (0x1 << SPI_CR2_RXNEIE_OFFSET);
+	if (temp1 && temp2)
+	{
+		// handle RXNE
+		spi_rxne_interrupt_handle(pSpiPinHandle);
+	}
+
+	// check for overrun flag
+	temp1 = SPI_GetFlagStatus(pSpiPinHandle->pSpiBase, SPI_SR_OVR_FLAG);
+	/* Tx buffer empty interrupt enable */
+	temp2 = pSpiPinHandle->pSpiBase->CR2 & (0x1 << SPI_CR2_ERRIE_OFFSET);
+	if (temp1 && temp2)
+	{
+		// handle overrun
+		spi_overrun_interrupt_handle(pSpiPinHandle);
 	}
 }
 
