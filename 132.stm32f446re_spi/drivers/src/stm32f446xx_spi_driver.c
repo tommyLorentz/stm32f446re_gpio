@@ -59,7 +59,24 @@ void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, int32_t Len)
 
 void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, int32_t Len)
 {
+	while(Len > 0)
+	{
+		// 1. wait until TXE buffer is empty
+		while(SPI_RXNE_EMPTY == SPI_GetFlagStatus(pBase, SPI_RXNE_FLAG)){}
 
+		// check the DFF bit in data format
+		if (pBase->CR1 & (0x01 << SPI_CR1_DFF_OFFSET))
+		{
+			*(( uint16_t *) pRxBuffer) = pBase->DR;
+			Len -= 2;
+			( uint16_t *) pRxBuffer++;
+		}else
+		{
+			*(( uint8_t *) pRxBuffer) = pBase->DR;
+			Len -= 1;
+			pRxBuffer++;
+		}
+	}
 }
 
 

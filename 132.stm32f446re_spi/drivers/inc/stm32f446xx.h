@@ -339,6 +339,8 @@ enum irq_priority_order {
 
 #define SPI_TXE_EMPTY		1
 #define SPI_TXE_NEMPTY		0
+#define SPI_RXNE_EMPTY		0
+#define SPI_RXNE_NEMPTY		1
 
 /*
  * Clock Enable macros for GPIOx peripheral
