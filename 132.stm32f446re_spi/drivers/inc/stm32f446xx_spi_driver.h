@@ -164,9 +164,19 @@ void SPI_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority);
 void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle);
 
 /*
+ * Application Callback
+ */
+__weak void SPI_ApplicationEventCallback(SPI_Handle_t *pSpiPinHandle, uint8_t AppEvent);
+
+/*
  * Other peripheral control APIs
  */
 void SPI_PeripheralEnableConfig(SPI_RegDef_t *pBase, uint8_t IsEn);
 void SPI_SsiConfig(SPI_RegDef_t *pBase, uint8_t IsEn);
+
+void SPI_ClearOverrunFlag(SPI_Handle_t *pSpiPinHandle);
+void SPI_CloseTransmission(SPI_Handle_t *pSpiPinHandle);
+void SPI_CloseReception(SPI_Handle_t *pSpiPinHandle);
+
 
 #endif /* INC_STM32F446XX_SPI_DRIVER_H_ */

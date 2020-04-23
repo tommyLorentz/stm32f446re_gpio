@@ -29,22 +29,44 @@ static void spi_txe_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
 	if (0 == pSpiPinHandle->TxLen)
 	{
 		// TxLen is 0, then close the SPI transmission and inform the application that Tx is over
-		pSpiPinHandle->pSpiBase->CR2 &= ~(0x1 << SPI_CR2_TXEIE_OFFSET);
-		pSpiPinHandle->pTxBuffer = NULL;
-		pSpiPinHandle->TxLen = 0;
-		pSpiPinHandle->TxState = SPI_STATE_READY;
+		SPI_CloseTransmission(pSpiPinHandle);
 		SPI_ApplicationEventCallback(pSpiPinHandle, SPI_EVENT_TX_COMPLETE);
 	}
 }
 
 static void spi_rxne_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
 {
+	// check the DFF bit in data format
+	if (pSpiPinHandle->pSpiBase->CR1 & (0x01 << SPI_CR1_DFF_OFFSET))
+	{
+		*(( uint16_t *) pSpiPinHandle->pRxBuffer) = pSpiPinHandle->pSpiBase->DR;
+		pSpiPinHandle->RxLen -= 2;
+		( uint16_t *) pSpiPinHandle->pRxBuffer++;
+	}else
+	{
+		*(( uint8_t *) pSpiPinHandle->pRxBuffer) = pSpiPinHandle->pSpiBase->DR;
+		pSpiPinHandle->RxLen -= 1;
+		pSpiPinHandle->pRxBuffer++;
+	}
 
+	if (0 == pSpiPinHandle->RxLen)
+	{
+		// RxLen is 0, then close the SPI reception and inform the application that Rx is over
+		SPI_CloseReception(pSpiPinHandle);
+		SPI_ApplicationEventCallback(pSpiPinHandle, SPI_EVENT_RX_COMPLETE);
+	}
 }
 
 static void spi_overrun_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
 {
+	// clear the overrun flag
+	if (pSpiPinHandle->TxState != SPI_STATE_BUSY_TX)
+	{
+		SPI_ClearOverrunFlag(pSpiPinHandle);
+	}
 
+	// inform the application
+	SPI_ApplicationEventCallback(pSpiPinHandle, SPI_EVENT_OVERRUN_ERROR);
 }
 
 
@@ -403,3 +425,33 @@ void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle)
 	}
 }
 
+void SPI_ClearOverrunFlag(SPI_Handle_t *pSpiPinHandle)
+{
+	uint8_t temp;
+	temp = pSpiPinHandle->pSpiBase->DR;
+	temp = pSpiPinHandle->pSpiBase->SR;
+}
+
+void SPI_CloseTransmission(SPI_Handle_t *pSpiPinHandle)
+{
+	pSpiPinHandle->pSpiBase->CR2 &= ~(0x1 << SPI_CR2_TXEIE_OFFSET);
+	pSpiPinHandle->pTxBuffer = NULL;
+	pSpiPinHandle->TxLen = 0;
+	pSpiPinHandle->TxState = SPI_STATE_READY;
+}
+void SPI_CloseReception(SPI_Handle_t *pSpiPinHandle)
+{
+	pSpiPinHandle->pSpiBase->CR2 &= ~(0x1 << SPI_CR2_RXNEIE_OFFSET);
+	pSpiPinHandle->pRxBuffer = NULL;
+	pSpiPinHandle->RxLen = 0;
+	pSpiPinHandle->RxState = SPI_STATE_READY;
+}
+
+
+/*
+ * Application Callback
+ */
+__weak void SPI_ApplicationEventCallback(SPI_Handle_t *pSpiPinHandle, uint8_t AppEvent)
+{
+
+}

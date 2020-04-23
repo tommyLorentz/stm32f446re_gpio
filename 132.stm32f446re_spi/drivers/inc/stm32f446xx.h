@@ -16,6 +16,7 @@
  * Generic macros
  */
 #define __vo		volatile
+#define __weak		__attribute__((weak))
 
 #define ENABLE				1
 #define DISABLE				0
