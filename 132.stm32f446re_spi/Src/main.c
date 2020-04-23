@@ -28,7 +28,7 @@ void SPI_GpioInit(void)
 	gpioSettings.pGpioBase = GPIOB;
 	gpioSettings.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ALT;
 	//gpioSettings.GPIO_PinConfig.GPIO_PinSpeed
-	gpioSettings.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_NONE;
+	gpioSettings.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_PU;
 	gpioSettings.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_PUPL;
 	gpioSettings.GPIO_PinConfig.GPIO_PinAltFunMode = 5;
 
@@ -59,7 +59,7 @@ void SPI2_Init(void)
 	spiSettings.SPI_PinConfig.SPI_Dff = SPI_DFF_8BITS;
 	spiSettings.SPI_PinConfig.SPI_Cpol = SPI_CPOL_0;
 	spiSettings.SPI_PinConfig.SPI_Cpha = SPI_CPHA_0;
-	spiSettings.SPI_PinConfig.SPI_Ssm = SPI_SSM_EN; // software slave management enabled for NSS pin
+	spiSettings.SPI_PinConfig.SPI_Ssm = SPI_SSM_DI; // software slave management enabled for NSS pin
 	spiSettings.SPI_PinConfig.SPI_Lsbfirst = SPI_LSB_FIRST;
 	SPI_Init(&spiSettings);
 }
@@ -74,13 +74,15 @@ int main(void)
 
 	// 2. Write to the SPI_CR1 register
 	SPI2_Init();
-	SPI_SsiConfig(SPI2, ENABLE);
 
 	// NSS output enable
-	SPI_PeripheralControl(SPI2, ENABLE);
+	SPI_PeripheralEnableConfig(SPI2, ENABLE);
 
 	SPI_SendData(SPI2, (uint8_t *) user_data, strlen(user_data));
 
-	SPI_PeripheralControl(SPI2, DISABLE);
+	// Wait SPI until it's not busy
+	while (SPI_GetFlagStatus(SPI2, SPI_BSY_FLAG)) {}
+
+	SPI_PeripheralEnableConfig(SPI2, DISABLE);
 	for(;;);
 }

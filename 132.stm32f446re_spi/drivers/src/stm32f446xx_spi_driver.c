@@ -168,13 +168,15 @@ void SPI_Init(SPI_Handle_t *pSpiPinHandle)
 	if (pSpiPinHandle->SPI_PinConfig.SPI_Ssm == SPI_SSM_EN)
 	{
 		// Software slave management enabled
+		// Pull NSS pin by internal signal
 		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_SSM_OFFSET);
-		// pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_SSI_OFFSET);
+		pSpiPinHandle->pSpiBase->CR1 |= (0x01 << SPI_CR1_SSI_OFFSET);
 	}
 	else
 	{
 		// Software slave management disabled
 		pSpiPinHandle->pSpiBase->CR1 &= ~(0x01 << SPI_CR1_SSM_OFFSET);
+		pSpiPinHandle->pSpiBase->CR2 |= (0x01 << SPI_CR2_SSOE_OFFSET);
 	}
 
 
@@ -200,7 +202,7 @@ void SPI_DeInit(SPI_Handle_t *pSpiPinHandle)
 /*
  * Other peripheral control APIs
  */
-void SPI_PeripheralControl(SPI_RegDef_t *pBase, uint8_t IsEn)
+void SPI_PeripheralEnableConfig(SPI_RegDef_t *pBase, uint8_t IsEn)
 {
 	if (IsEn == ENABLE)
 	{
