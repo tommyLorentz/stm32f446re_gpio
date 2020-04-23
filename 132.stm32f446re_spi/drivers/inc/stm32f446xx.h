@@ -24,6 +24,8 @@
 #define GPIO_RESET			RESET
 #define FLAG_SET			SET
 #define FLAG_RESET			RESET
+#define ACK					SET
+#define NACK				RESET
 
 #define NVIC_GENERIC_OFFSET			0x4U
 
