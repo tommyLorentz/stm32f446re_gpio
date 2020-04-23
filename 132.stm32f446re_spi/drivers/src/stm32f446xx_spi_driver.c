@@ -13,7 +13,28 @@ static void spi_overrun_interrupt_handle(SPI_Handle_t *pSpiPinHandle);
 
 static void spi_txe_interrupt_handle(SPI_Handle_t *pSpiPinHandle)
 {
+	// check the DFF bit in data format
+	if (pSpiPinHandle->pSpiBase->CR1 & (0x01 << SPI_CR1_DFF_OFFSET))
+	{
+		pSpiPinHandle->pSpiBase->DR = *(( uint16_t *) pSpiPinHandle->pTxBuffer);
+		pSpiPinHandle->TxLen -= 2;
+		( uint16_t *) pSpiPinHandle->pTxBuffer++;
+	}else
+	{
+		pSpiPinHandle->pSpiBase->DR = *(( uint8_t *) pSpiPinHandle->pTxBuffer);
+		pSpiPinHandle->TxLen -= 1;
+		pSpiPinHandle->pTxBuffer++;
+	}
 
+	if (0 == pSpiPinHandle->TxLen)
+	{
+		// TxLen is 0, then close the SPI transmission and inform the application that Tx is over
+		pSpiPinHandle->pSpiBase->CR2 &= ~(0x1 << SPI_CR2_TXEIE_OFFSET);
+		pSpiPinHandle->pTxBuffer = NULL;
+		pSpiPinHandle->TxLen = 0;
+		pSpiPinHandle->TxState = SPI_STATE_READY;
+		SPI_ApplicationEventCallback(pSpiPinHandle, SPI_EVENT_TX_COMPLETE);
+	}
 }
 
 static void spi_rxne_interrupt_handle(SPI_Handle_t *pSpiPinHandle)

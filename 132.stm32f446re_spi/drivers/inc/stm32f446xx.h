@@ -10,6 +10,7 @@
 #define INC_STM32F446XX_H_
 
 #include <stdint.h>
+#include <stddef.h>
 
 /*
  * Generic macros

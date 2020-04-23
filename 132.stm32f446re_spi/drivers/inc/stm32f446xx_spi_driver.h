@@ -36,9 +36,9 @@ typedef struct {
 	SPI_PinConfig_t SPI_PinConfig;	/* This holds SPI pin configuration settings */
 	uint8_t 			*pTxBuffer;
 	uint8_t 			*pRxBuffer;
-	uint32_t 			TxLen;
-	uint32_t			RxLen;
-	uint8_t			TxState;		/* @SPI_TxRxState */
+	int32_t 			TxLen;
+	int32_t				RxLen;
+	uint8_t				TxState;		/* @SPI_TxRxState */
 	uint8_t 			RxState;		/* @SPI_TxRxState */
 
 }SPI_Handle_t;
@@ -106,6 +106,13 @@ typedef struct {
 #define SPI_STATE_BUSY_RX	1
 #define SPI_STATE_BUSY_TX	2
 
+/*
+ * Possible SPI Application Events
+ */
+#define SPI_EVENT_TX_COMPLETE		0
+#define SPI_EVENT_RX_COMPLETE		1
+#define SPI_EVENT_OVERRUN_ERROR		2
+#define SPI_EVENT_CRC_ERROR			3
 
 /*
  * SPI related status flags definition
