@@ -79,6 +79,46 @@ void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, int32_t Len)
 	}
 }
 
+uint8_t SPI_SendDataIt(SPI_Handle_t *pSpiPinHandle, uint8_t *pTxBuffer, int32_t Len)
+{
+	uint8_t state = pSpiPinHandle->TxState;
+	if (state == SPI_STATE_BUSY_RX)
+	{
+		// 1. Save the Tx buffer address and len information
+		pSpiPinHandle->pTxBuffer = pTxBuffer;
+		pSpiPinHandle->TxLen = Len;
+
+		// 2. Mark the SPI state as busy in transmission
+		pSpiPinHandle->TxState = SPI_STATE_BUSY_TX;
+
+		// 3. Enable the TXEIE control bit register
+		pSpiPinHandle->pSpiBase->CR2 |= (0x01 << SPI_CR2_TXEIE_OFFSET);
+	}
+
+	state = pSpiPinHandle->TxState;
+	return state;
+}
+
+uint8_t SPI_ReceiveDataIt(SPI_Handle_t *pSpiPinHandle, uint8_t *pRxBuffer, int32_t Len)
+{
+	uint8_t state = pSpiPinHandle->RxState;
+	if (state == SPI_STATE_BUSY_TX)
+	{
+		// 1. Save the Tx buffer address and len information
+		pSpiPinHandle->pRxBuffer = pRxBuffer;
+		pSpiPinHandle->RxLen = Len;
+
+		// 2. Mark the SPI state as busy in transmission
+		pSpiPinHandle->RxState = SPI_STATE_BUSY_RX;
+
+		// 3. Enable the TXEIE control bit register
+		pSpiPinHandle->pSpiBase->CR2 |= (0x01 << SPI_CR2_RXNEIE_OFFSET);
+	}
+
+	state = pSpiPinHandle->RxState;
+	return state;
+}
+
 
 /*
  * Peripheral clock setup
@@ -245,3 +285,54 @@ void SPI_SsiConfig(SPI_RegDef_t *pBase, uint8_t IsEn)
 		pBase->CR1 &= ~(0x01 << SPI_CR1_SSI_OFFSET);
 	}
 }
+
+/*
+ * IRQ configuration
+ */
+void SPI_IrqInteruptConfig(uint8_t IrqPosition, uint8_t IsEn)
+{
+	__vo uint32_t *pNvicBase;
+
+	// Set or clear interrupt register
+	if (IsEn == ENABLE)
+	{
+		// program ISER register
+		pNvicBase = (__vo uint32_t *) (NVIC_ISER_BASE + (IrqPosition / 32) * NVIC_GENERIC_OFFSET);
+		*pNvicBase |=  ( 0x1 << (IrqPosition % 32));
+	}
+	else
+	{
+		// program ICER register
+		pNvicBase = (__vo uint32_t *) (NVIC_ICER_BASE + (IrqPosition / 32) * NVIC_GENERIC_OFFSET);
+		*pNvicBase |=  ( 0x1 << (IrqPosition % 32));
+	}
+}
+
+/*
+ * IRQ priority configuration
+ */
+void SPI_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority)
+{
+	__vo uint8_t *pNvicBase;
+
+	// Set priority register
+	{
+		// program ISER register
+		pNvicBase = (__vo uint8_t *) (NVIC_PRI0 + IrqPosition);
+		*pNvicBase = (IrqPriority << NVIC_PRI_BIT_SHIFT); /* only use 4 bit: 16 orders */
+	}
+}
+
+/*
+ * ISR handling
+ */
+void SPI_IrqHandling(uint8_t PinNumber)
+{
+	// clear the exti pr register corresponding to the pin
+	if (EXTI->PR & (0x1 << PinNumber))
+	{
+		// write 1 to clear
+		EXTI->PR |= (0x1 << PinNumber);
+	}
+}
+

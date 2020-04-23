@@ -34,6 +34,12 @@ typedef struct {
 	// pointer to hold the base address of the GPIO peripheral
 	SPI_RegDef_t	*pSpiBase;		/* This holds the base address of the SPI port to which the pin belongs */
 	SPI_PinConfig_t SPI_PinConfig;	/* This holds SPI pin configuration settings */
+	uint8_t 			*pTxBuffer;
+	uint8_t 			*pRxBuffer;
+	uint32_t 			TxLen;
+	uint32_t			RxLen;
+	uint8_t			TxState;		/* @SPI_TxRxState */
+	uint8_t 			RxState;		/* @SPI_TxRxState */
 
 }SPI_Handle_t;
 
@@ -93,6 +99,13 @@ typedef struct {
 #define SPI_MSB_FIRST		0
 #define SPI_LSB_FIRST		1
 
+/*
+ * @SPI_TxRxState
+ */
+#define SPI_STATE_READY		0
+#define SPI_STATE_BUSY_RX	1
+#define SPI_STATE_BUSY_TX	2
+
 
 /*
  * SPI related status flags definition
@@ -123,6 +136,9 @@ void SPI_DeInit(SPI_Handle_t *pSpiPinHandle);
 void SPI_SendData(SPI_RegDef_t *pBase, uint8_t *pTxBuffer, int32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pBase, uint8_t *pRxBuffer, int32_t Len);
 
+uint8_t SPI_SendDataIt(SPI_Handle_t *pSpiPinHandle, uint8_t *pTxBuffer, int32_t Len);
+uint8_t SPI_ReceiveDataIt(SPI_Handle_t *pSpiPinHandle, uint8_t *pRxBuffer, int32_t Len);
+
 /*
  * IRQ configuration
  */
@@ -132,7 +148,7 @@ void SPI_IrqPriorityConfig(uint8_t IrqPosition, uint8_t IrqPriority);
 /*
  * ISR handling
  */
-void SPI_IrqHandling(SPI_Handle_t *pSpiPinHandle);
+void SPI_IrqHandling(uint8_t PinNumber);
 
 /*
  * Other peripheral control APIs
