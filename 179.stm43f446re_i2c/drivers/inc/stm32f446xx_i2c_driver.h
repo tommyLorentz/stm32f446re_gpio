@@ -15,8 +15,8 @@
  */
 typedef struct
 {
-	uint32_t	I2C_SclkSpeed;			/* @ */
-	uint8_t		I2C_DeviceAddress;		/* @ */
+	uint32_t	I2C_SclkSpeed;			/* @I2C_SclkSpeed */
+	uint8_t		I2C_DeviceAddress;
 	uint8_t		I2C_AckControl;			/* @ */
 	uint8_t		I2C_FmDutyCycle;		/* @ */
 
@@ -32,5 +32,27 @@ typedef struct {
 	I2C_PinConfig_t I2C_PinConfig;	/* This holds I2C pin configuration settings */
 
 }I2C_Handle_t;
+
+/*
+ * @I2C_SclkSpeed
+ */
+#define I2C_SCLK_SPEED_SM		100000
+#define I2C_SCLK_SPEED_FM		400000
+
+/*
+ * @I2C_AckControl
+ */
+#define I2C_ACK_ENABLE		1
+#define I2C_ACK_DISABLE		0
+
+/*
+ * @I2C_FmDutyCycle
+ */
+#define I2C_FM_DUTY_2		0
+#define I2C_FM_DUTY_16_9	1
+
+
+
+
 
 #endif /* INC_STM32F446XX_I2C_DRIVER_H_ */
