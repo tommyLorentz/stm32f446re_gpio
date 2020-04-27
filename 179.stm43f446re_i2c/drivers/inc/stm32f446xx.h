@@ -413,7 +413,7 @@ enum irq_priority_order {
 #define I2C_SR1_ARLO_OFFSET			9	/* Arbitration lost (master mode) */
 #define I2C_SR1_BERR_OFFSET			8	/* Bus error */
 #define I2C_SR1_TXE_OFFSET			7	/* Data register empty (transmitters) */
-#define I2C_SR1_RxNE_OFFSET			6	/* Data register not empty (receivers) */
+#define I2C_SR1_RXNE_OFFSET			6	/* Data register not empty (receivers) */
 #define I2C_SR1_STOPF_OFFSET		4	/* Stop detection (slave mode) */
 #define I2C_SR1_ADD10_OFFSET		3	/* 10-bit header sent (Master mode) */
 #define I2C_SR1_BTF_OFFSET			2	/* Byte transfer finished */

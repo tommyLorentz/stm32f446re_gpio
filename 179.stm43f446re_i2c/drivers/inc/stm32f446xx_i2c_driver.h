@@ -63,7 +63,7 @@ typedef struct {
 #define I2C_SR1_ARLO_FLAG()			(0x01 << I2C_SR1_ARLO_OFFSET)	/* Arbitration lost (master mode) */
 #define I2C_SR1_BERR_FLAG()			(0x01 << I2C_SR1_BERR_OFFSET)	/* Bus error */
 #define I2C_SR1_TXE_FLAG()			(0x01 << I2C_SR1_TXE_OFFSET)	/* Data register empty (transmitters) */
-#define I2C_SR1_RxNE_FLAG()			(0x01 << I2C_SR1_RxNE_OFFSET)	/* Data register not empty (receivers) */
+#define I2C_SR1_RXNE_FLAG()			(0x01 << I2C_SR1_RXNE_OFFSET)	/* Data register not empty (receivers) */
 #define I2C_SR1_STOPF_FLAG()		(0x01 << I2C_SR1_STOPF_OFFSET)	/* Stop detection (slave mode) */
 #define I2C_SR1_ADD10_FLAG()		(0x01 << I2C_SR1_ADD10_OFFSET)	/* 10-bit header sent (Master mode) */
 #define I2C_SR1_BTF_FLAG()			(0x01 << I2C_SR1_BTF_OFFSET)	/* Byte transfer finished */
@@ -92,6 +92,8 @@ void I2C_PeriClockControl(I2C_RegDef_t *pBase, uint8_t IsEn);
  */
 void I2C_Init(I2C_Handle_t *pI2CPinHandle);
 void I2C_DeInit(I2C_Handle_t *pI2CPinHandle);
+
+uint32_t RCC_GetPclk1Value(void);
 
 /*
  * Data Send and Receive
