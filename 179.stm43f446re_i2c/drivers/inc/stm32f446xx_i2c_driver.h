@@ -15,32 +15,22 @@
  */
 typedef struct
 {
-	uint8_t	SPI_DeviceMode;			/* @SPI_DeviceMode */
-	uint8_t	SPI_BusConfig;			/* @SPI_BusConfig */
-	uint8_t	SPI_SclkSpeed;			/* @SPI_SclkSpeed */
-	uint8_t	SPI_Dff;				/* @SPI_Dff */
-	uint8_t	SPI_Cpol;				/* @SPI_Cpol */
-	uint8_t	SPI_Cpha;				/* @SPI_Cpha */
-	uint8_t	SPI_Ssm;				/* @SPI_Ssm */
-	uint8_t	SPI_Lsbfirst;			/* @SPI_Lsbfirst */
+	uint32_t	I2C_SclkSpeed;			/* @ */
+	uint8_t		I2C_DeviceAddress;		/* @ */
+	uint8_t		I2C_AckControl;			/* @ */
+	uint8_t		I2C_FmDutyCycle;		/* @ */
 
-}SPI_PinConfig_t;
+}I2C_PinConfig_t;
 
 /*
- * This is a Handle structure for a SPI pin
+ * This is a Handle structure for a I2C pin
  */
 typedef struct {
 
 	// pointer to hold the base address of the GPIO peripheral
-	SPI_RegDef_t	*pSpiBase;		/* This holds the base address of the SPI port to which the pin belongs */
-	SPI_PinConfig_t SPI_PinConfig;	/* This holds SPI pin configuration settings */
-	uint8_t 			*pTxBuffer;
-	uint8_t 			*pRxBuffer;
-	int32_t 			TxLen;
-	int32_t				RxLen;
-	uint8_t				TxState;		/* @SPI_TxRxState */
-	uint8_t 			RxState;		/* @SPI_TxRxState */
+	I2C_RegDef_t	*pI2cBase;		/* This holds the base address of the I2C port to which the pin belongs */
+	I2C_PinConfig_t I2C_PinConfig;	/* This holds I2C pin configuration settings */
 
-}SPI_Handle_t;
+}I2C_Handle_t;
 
 #endif /* INC_STM32F446XX_I2C_DRIVER_H_ */
