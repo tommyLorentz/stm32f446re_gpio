@@ -70,20 +70,45 @@ void I2C_Init(I2C_Handle_t *pI2CPinHandle)
 {
 	uint32_t temp;
 
-	// enable ack
+	/* enable ack */
 	pI2CPinHandle->pI2cBase->CR1 |= (0x01 << I2C_CR1_ACK_OFFSET);
 
-	// configure frequency for CR2
+	/* configure frequency for CR2 */
 	temp = RCC_GetPclk1Value() / 1000000U;
 	pI2CPinHandle->pI2cBase->CR2 |= (temp & 0x3f);
 
-	// configure I2C Own address register 1 ADD[7:1]
+	/* configure I2C Own address register 1 ADD[7:1] */
 	temp = pI2CPinHandle->I2C_PinConfig.I2C_DeviceAddress << 1;
 
-	// configure bit14
+	/* configure bit14 */
 	temp |= (1 << 14);
 
 	pI2CPinHandle->pI2cBase->OAR1 |= temp;
+
+
+	/* configure CCR */
+	uint32_t ccr_value;
+	if (pI2CPinHandle->I2C_PinConfig.I2C_SclkSpeed <= I2C_SCLK_SPEED_SM)
+	{
+		ccr_value = RCC_GetPclk1Value() / (2 * pI2CPinHandle->I2C_PinConfig.I2C_SclkSpeed);
+		temp = ccr_value & 0xfff;
+	}
+	else
+	{
+		if (pI2CPinHandle->I2C_PinConfig.I2C_FmDutyCycle <= I2C_FM_DUTY_16_9)
+		{
+			// set both FS mode and duty cycle
+			ccr_value = RCC_GetPclk1Value() / (25 * pI2CPinHandle->I2C_PinConfig.I2C_SclkSpeed);
+			temp = ccr_value | (3 << 14);
+		}
+		else
+		{
+			// set both FS mode only
+			ccr_value = RCC_GetPclk1Value() / (2 * pI2CPinHandle->I2C_PinConfig.I2C_SclkSpeed);
+			temp = ccr_value | (1 << 15);
+		}
+	}
+
 
 }
 
