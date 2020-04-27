@@ -23,6 +23,8 @@
 #define DISABLE				0
 #define SET					1
 #define RESET				0
+#define TRUE				1
+#define FALSE				0
 #define GPIO_SET			SET
 #define GPIO_RESET			RESET
 #define FLAG_SET			SET
@@ -428,7 +430,7 @@ enum irq_priority_order {
 #define I2C_SR2_GENCALL_OFFSET		4	/* General call address (Slave mode) */
 #define I2C_SR2_TRA_OFFSET			2	/* Transmitter/receiver */
 #define I2C_SR2_BUSY_OFFSET			1	/* Bus busy */
-#define I2C_SR2_MSL_OFFSET			8	/* Master/slave */
+#define I2C_SR2_MSL_OFFSET			0	/* Master/slave */
 
 /*
  * Bit position definitions I2C_SR2
@@ -532,5 +534,11 @@ enum irq_priority_order {
 #define SPI3_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 15) ); (RCC->APB1RSTR &= ~(1 << 15) ); }while(0)
 #define SPI4_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 13) ); (RCC->APB2RSTR &= ~(1 << 13) ); }while(0)
 
+/*
+ * RESET macros for SPIx peripheral
+ */
+#define I2C1_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 21) ); (RCC->APB1RSTR &= ~(1 << 21) ); }while(0)
+#define I2C2_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 22) ); (RCC->APB1RSTR &= ~(1 << 22) ); }while(0)
+#define I2C3_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 23) ); (RCC->APB1RSTR &= ~(1 << 23) ); }while(0)
 
 #endif /* INC_STM32F446XX_H_ */
