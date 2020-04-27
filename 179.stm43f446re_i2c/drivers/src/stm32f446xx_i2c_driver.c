@@ -73,6 +73,18 @@ void I2C_Init(I2C_Handle_t *pI2CPinHandle)
 	// enable ack
 	pI2CPinHandle->pI2cBase->CR1 |= (0x01 << I2C_CR1_ACK_OFFSET);
 
+	// configure frequency for CR2
+	temp = RCC_GetPclk1Value() / 1000000U;
+	pI2CPinHandle->pI2cBase->CR2 |= (temp & 0x3f);
+
+	// configure I2C Own address register 1 ADD[7:1]
+	temp = pI2CPinHandle->I2C_PinConfig.I2C_DeviceAddress << 1;
+
+	// configure bit14
+	temp |= (1 << 14);
+
+	pI2CPinHandle->pI2cBase->OAR1 |= temp;
+
 }
 
 void I2C_DeInit(I2C_Handle_t *pI2CPinHandle)
