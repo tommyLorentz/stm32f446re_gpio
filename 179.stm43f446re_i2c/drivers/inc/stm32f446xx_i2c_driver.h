@@ -98,7 +98,7 @@ uint32_t RCC_GetPclk1Value(void);
 /*
  * Data Send and Receive
  */
-
+void I2C_MasterSendData(I2C_Handle_t *pI2CPinHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr);
 
 /*
  * IRQ configuration

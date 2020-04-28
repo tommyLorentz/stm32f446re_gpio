@@ -8,6 +8,27 @@
 
 #include "stm32f446xx_i2c_driver.h"
 
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pBase);
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pBase);
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pBase, uint8_t SlaveAddr);
+static void I2C_ClearAddrFlag(I2C_RegDef_t *pBase);
+
+
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pBase)
+{
+	pBase->CR1 |= (0x1 << I2C_CR1_START_OFFSET);
+}
+
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pBase)
+{
+	pBase->CR1 |= (0x1 << I2C_CR1_STOP_OFFSET);
+}
+
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pBase, uint8_t SlaveAddr)
+{
+	pBase->DR = (SlaveAddr << 1);
+}
+
 uint32_t RCC_GetPclk1Value(void)
 {
 	uint32_t clk;
@@ -42,6 +63,15 @@ uint32_t RCC_GetPclk1Value(void)
 	}
 
 	return clk;
+}
+
+static void I2C_ClearAddrFlag(I2C_RegDef_t *pBase)
+{
+	uint32_t dummy;
+
+	dummy = pBase->SR1;
+	dummy = pBase->SR2;
+	__unused(dummy);
 }
 
 /*
@@ -118,6 +148,47 @@ void I2C_DeInit(I2C_Handle_t *pI2CPinHandle)
 	if (pI2cBase == I2C1) I2C1_REG_RESET();
 	else if (pI2cBase == I2C2) I2C2_REG_RESET();
 	else if (pI2cBase == I2C3) I2C3_REG_RESET();
+}
+
+/*
+ * Data Send and Receive
+ */
+void I2C_MasterSendData(I2C_Handle_t *pI2CPinHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr)
+{
+	// 1. Generate the START condition
+	I2C_GenerateStartCondition(pI2CPinHandle->pI2cBase);
+
+	// 2. Confirm the start generation is completed by checking the SB flag in the SR1
+	// Note: until SB is cleared SCL will be stretched (pull low)
+	while(!I2C_GetFlagStatus(pI2CPinHandle->pI2cBase, FALSE, I2C_SR1_SB_FLAG() )) {}
+
+	// 3. Send the address og the slave with R/W bit set to w(0) (total 8 bits)
+	I2C_ExecuteAddressPhase(pI2CPinHandle->pI2cBase, SlaveAddr);
+
+	// 4. Confirm the address phase is completed by checking the ADDR flag in the SR1
+	while(!I2C_GetFlagStatus(pI2CPinHandle->pI2cBase, TRUE, I2C_SR1_ADDR_FLAG() )) {}
+
+	// 5. Clear the ADDR flag according to its software sequence
+	// Note: until SB is cleared SCL will be stretched (pull low)
+	I2C_ClearAddrFlag(pI2CPinHandle->pI2cBase);
+
+	// 6. Send the data until Len becames 0
+	while (Len > 0)
+	{
+		while (!I2C_GetFlagStatus(pI2CPinHandle->pI2cBase, FALSE, I2C_SR1_TXE_FLAG() )) {}
+		pI2CPinHandle->pI2cBase->DR = *pTxBuffer;
+		pTxBuffer++;
+		Len--;
+	}
+
+	// 7. When Len become zero, wait for TXE=1 and BTF=1 before generating the STOP condition
+	// Note: TXE=1, BTF=1, means that both SR and DR are empty and next transmission should begin
+	// when BTF=1 SCL will be stretched (pull low)
+	while (!I2C_GetFlagStatus(pI2CPinHandle->pI2cBase, FALSE, I2C_SR1_TXE_FLAG() )) {}
+	while (!I2C_GetFlagStatus(pI2CPinHandle->pI2cBase, FALSE, I2C_SR1_BTF_FLAG() )) {}
+
+	// 8. Generate the STOP condition
+	I2C_GenerateStopCondition(pI2CPinHandle->pI2cBase);
 }
 
 /*
