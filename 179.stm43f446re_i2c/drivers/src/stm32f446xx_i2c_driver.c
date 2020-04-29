@@ -138,8 +138,21 @@ void I2C_Init(I2C_Handle_t *pI2CPinHandle)
 			temp = ccr_value | (1 << 15);
 		}
 	}
+	pI2CPinHandle->pI2cBase->CCR = temp;
 
 
+	// TRISE configuration
+	if (pI2CPinHandle->I2C_PinConfig.I2C_SclkSpeed <= I2C_SCLK_SPEED_SM)
+	{
+		// standard mode
+		temp = (RCC_GetPclk1Value() / 1000000U) + 1;
+	}
+	else
+	{
+		// fast mode
+		temp = (RCC_GetPclk1Value() *300 / 1000000000U) + 1;
+	}
+	pI2CPinHandle->pI2cBase->TRISE = (temp & 0x3F);
 }
 
 void I2C_DeInit(I2C_Handle_t *pI2CPinHandle)
@@ -172,7 +185,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CPinHandle, uint8_t *pTxBuffer, uint32_
 	// Note: until SB is cleared SCL will be stretched (pull low)
 	I2C_ClearAddrFlag(pI2CPinHandle->pI2cBase);
 
-	// 6. Send the data until Len becames 0
+	// 6. Send the data until Len becomes 0
 	while (Len > 0)
 	{
 		while (!I2C_GetFlagStatus(pI2CPinHandle->pI2cBase, FALSE, I2C_SR1_TXE_FLAG() )) {}
