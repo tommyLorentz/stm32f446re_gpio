@@ -28,7 +28,70 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+// extern void initialise_monitor_handles();
+
+#define MASTER_ADDRESS		0x61
+#define SLAVE_ADDRESS		0x68
+I2C_Handle_t i2cSettings;
+
+void delay(void)
+{
+	uint32_t i;
+	for (i=0; i< 500000/2; ++i) {}
+}
+
+/*
+ * PB6 --> I2C1_SCLK
+ * PB9 --> I2C1_SDA
+ * ALT: function mode: 4
+ */
+void I2C1_GpioInit(void)
+{
+	GPIO_Handle_t gpioSettings;
+	gpioSettings.pGpioBase = GPIOB;
+	gpioSettings.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ALT;
+	gpioSettings.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OSPEED_FAST;
+	gpioSettings.GPIO_PinConfig.GPIO_PinPupdControl = GPIO_PUPD_PU;
+	gpioSettings.GPIO_PinConfig.GPIO_PinOpType = GPIO_OTYPE_OPENDRAIN; // open drain
+	gpioSettings.GPIO_PinConfig.GPIO_PinAltFunMode = 4;
+
+	// PB6 --> I2C1_SCLK
+	gpioSettings.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_6;
+	GPIO_Init(&gpioSettings);
+
+	// PB9 --> I2C1_SDA
+	gpioSettings.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_9;
+	GPIO_Init(&gpioSettings);
+}
+
+void I2C1_Init(void)
+{
+	i2cSettings.pI2cBase = I2C1;
+	i2cSettings.I2C_PinConfig.I2C_SclkSpeed = I2C_SCLK_SPEED_SM;
+	i2cSettings.I2C_PinConfig.I2C_DeviceAddress = MASTER_ADDRESS; // don't use the reserved address
+	i2cSettings.I2C_PinConfig.I2C_AckControl = I2C_ACK_ENABLE;
+	i2cSettings.I2C_PinConfig.I2C_FmDutyCycle = I2C_FM_DUTY_2;
+
+	I2C_Init(&i2cSettings);
+}
+
 int main(void)
 {
+	uint8_t str[] = "some data for arduino";
+
+	// 1. Write proper GPIO registers: Configure GPIO for SDA and SCK pins.
+	I2C1_GpioInit();
+
+	// 2. Write to the SPI_CR1 register
+	I2C1_Init();
+
+	// wait for button pressed
+
+	// Send data to the slave
+	I2C_MasterSendData(&i2cSettings, str, strlen(str), SLAVE_ADDRESS);
+
+
+
+
 	for(;;);
 }

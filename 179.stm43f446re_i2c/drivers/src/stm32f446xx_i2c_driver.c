@@ -100,6 +100,9 @@ void I2C_Init(I2C_Handle_t *pI2CPinHandle)
 {
 	uint32_t temp;
 
+	// Enable peripheral for I2C
+	I2C_PeriClockControl(pI2CPinHandle->pI2cBase, ENABLE);
+
 	/* enable ack */
 	pI2CPinHandle->pI2cBase->CR1 |= (0x01 << I2C_CR1_ACK_OFFSET);
 
